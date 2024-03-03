@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  db:
+    container_name: pdb
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER_FILE: /run/secrets/db_user
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+      POSTGRES_DB_FILE: /run/secrets/db_dbname
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    secrets:
+      - db_password
+      - db_user
+      - db_dbname
+
+  fastapi:
+    container_name: fastapi
+    restart: always
+    build: ./api
+    ports:
+      - "8001:8001"
+    environment:
+      DB_USER_FILE: /run/secrets/db_user
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      DB_NAME_FILE: /run/secrets/db_dbname
+    volumes:
+      - ./api:/home/app/web
+    command: uvicorn main:app --reload --proxy-headers --host 0.0.0.0 --port 8001
+    depends_on:
+      - db
+    env_file:
+      - ./api/.env
+    secrets:
+      - db_password
+      - db_user
+      - db_dbname
+
+secrets:
+  db_password:
+    file: api/secrets/db_password.secret
+  db_user:
+    file: api/secrets/db_user.secret
+  db_dbname:
+    file: api/secrets/db_dbname.secret

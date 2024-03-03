@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap');
+@import url("./effect.scss");
+@import url("./inputs.scss");
+@import url('primeicons/primeicons.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+	@tailwind base;
+}
+
+@layer tailwind-utilities {
+	@tailwind components;
+	@tailwind utilities;
+}
+
+@layer base {
+	html {
+		font-family: "Didact Gothic", system-ui, sans-serif;
+	}
+}
+
+:root {
+	--sidebar-width: 9rem;
+	--sm-sidebar-width: calc(var(--sidebar-width) - 3rem);
+}
+
+/* ===== Scrollbar CSS ===== */
+
+/* Firefox */
+* {
+	scrollbar-width: auto;
+	scrollbar-color: #d1d5dbb0 transparent;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+*::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: #d1d5dbb0;
+	border-radius: 10px;
+}
