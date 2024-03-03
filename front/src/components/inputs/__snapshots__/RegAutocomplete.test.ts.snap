@@ -1,0 +1,64 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RegAutocomplete.vue > check search 1`] = `
+"<div><label for="regautocompleteid-1" class="reg-input--label">test</label>
+  <div style="position: relative;" data-pc-name="autocomplete" data-pc-section="root" modelmodifiers="[object Object]" class="p-autocomplete p-component p-inputwrapper p-focus p-inputwrapper-focus p-overlay-open w-full"><input id="regautocompleteid-1" type="text" class="p-autocomplete-input p-inputtext p-component reg-input--text" tabindex="0" autocomplete="off" role="combobox" aria-haspopup="listbox" aria-autocomplete="list" data-pc-section="input" aria-controls="pv_id_1_list" aria-expanded="true" aria-activedescendant="pv_id_1_0">
+    <!---->
+    <!---->
+    <!----><span role="status" aria-live="polite" class="p-hidden-accessible" data-pc-section="hiddensearchresult" data-p-hidden-accessible="true">9 results are available</span>
+    <teleport-stub to="body">
+      <transition-stub name="p-connected-overlay" appear="false" persisted="false" css="true">
+        <div class="p-autocomplete-panel p-component p-ripple-disabled" style="max-height: 200px; min-width: 0px; visibility: visible; display: none; transform-origin: top; top: 0px; left: 0px;" data-pc-section="panel">
+          <ul id="pv_id_1_list" class="p-autocomplete-items" role="listbox" data-pc-section="list">
+            <li id="pv_id_1_0" class="p-autocomplete-item p-focus" role="option" aria-label="59000" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="1" data-p-highlight="false" data-p-focus="true" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59000</span><span>CDV NORD</span></div>
+            </li>
+            <li id="pv_id_1_1" class="p-autocomplete-item" role="option" aria-label="59001" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="2" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59001</span><span>Y C AUBIGNY</span></div>
+            </li>
+            <li id="pv_id_1_2" class="p-autocomplete-item" role="option" aria-label="59002" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="3" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59002</span><span>Y C BRAY DUNES</span></div>
+            </li>
+            <li id="pv_id_1_3" class="p-autocomplete-item" role="option" aria-label="59003" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="4" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59003</span><span>C F N DE GRAVELINES</span></div>
+            </li>
+            <li id="pv_id_1_4" class="p-autocomplete-item" role="option" aria-label="59004" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="5" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59004</span><span>Y C MER DU NORD</span></div>
+            </li>
+            <li id="pv_id_1_5" class="p-autocomplete-item" role="option" aria-label="59005" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="6" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59005</span><span>C V VALENCIENNES</span></div>
+            </li>
+            <li id="pv_id_1_6" class="p-autocomplete-item" role="option" aria-label="59006" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="7" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59006</span><span>C N  PERROQUET FR.</span></div>
+            </li>
+            <li id="pv_id_1_7" class="p-autocomplete-item" role="option" aria-label="59007" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="8" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59007</span><span>ASPTT DUNKERQUE</span></div>
+            </li>
+            <li id="pv_id_1_8" class="p-autocomplete-item" role="option" aria-label="59008" aria-selected="false" aria-disabled="false" aria-setsize="9" aria-posinset="9" data-p-highlight="false" data-p-focus="false" data-p-disabled="false" data-pc-section="item">
+              <div class="flex gap-2" data-row-autocomplete=""><span>59008</span><span>C V DES FLANDRES</span></div>
+            </li>
+            <!---->
+          </ul><span role="status" aria-live="polite" class="p-hidden-accessible" data-pc-section="hiddenselectedmessage" data-p-hidden-accessible="true">No selected item</span>
+        </div>
+      </transition-stub>
+    </teleport-stub>
+  </div>
+  <!--v-if-->
+</div>"
+`;
+
+exports[`RegAutocomplete.vue > check search 2`] = `
+"<div><label for="regautocompleteid-1" class="reg-input--label">test</label>
+  <div style="position: relative;" data-pc-name="autocomplete" data-pc-section="root" modelmodifiers="[object Object]" class="p-autocomplete p-component p-inputwrapper p-focus p-inputwrapper-focus w-full"><input id="regautocompleteid-1" type="text" class="p-autocomplete-input p-inputtext p-component reg-input--text" tabindex="0" autocomplete="off" role="combobox" aria-haspopup="listbox" aria-autocomplete="list" data-pc-section="input" aria-controls="pv_id_1_list" aria-expanded="false">
+    <!---->
+    <!---->
+    <!----><span role="status" aria-live="polite" class="p-hidden-accessible" data-pc-section="hiddensearchresult" data-p-hidden-accessible="true">No results found</span>
+    <teleport-stub to="body">
+      <transition-stub name="p-connected-overlay" appear="false" persisted="false" css="true">
+        <!---->
+      </transition-stub>
+    </teleport-stub>
+  </div>
+  <!--v-if-->
+</div>"
+`;

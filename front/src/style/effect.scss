@@ -1,0 +1,11 @@
+.hover-underline-animation {
+	@apply inline-block relative;
+
+	&::after {
+		@apply bg-white content-[''] absolute w-full scale-x-0 h-[2px] -bottom-1 left-0 origin-left transition-all ease-in-out;
+	}
+
+	&:hover::after {
+		@apply scale-x-100;
+	}
+}

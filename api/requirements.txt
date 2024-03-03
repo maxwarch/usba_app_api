@@ -1,0 +1,14 @@
+fastapi
+pandas
+scikit-learn==1.3.2
+uvicorn
+fastapi-sqlalchemy 
+pydantic
+pydantic[email]
+alembic 
+psycopg2-binary
+python-dotenv
+alembic
+python-multipart
+python-jose[cryptography]
+bcrypt

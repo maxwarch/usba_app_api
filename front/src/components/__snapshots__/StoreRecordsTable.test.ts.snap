@@ -1,0 +1,378 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`StoreRecordsTable.vue > click on refresh > with refresh bt - no data 1`] = `
+"<div data-v-c1886280="" class="relative w-full">
+  <div data-v-c1886280="" class="flex flex-wrap items-center justify-between bg-regate-primary-50 p-4">
+    <!--v-if-->
+    <div data-v-c1886280="" class="reg-input relative">
+      <!--v-if-->
+      <div class="relative"><input id="reginputtextid-1" role="" type="text" placeholder="Rechercher" class="reg-input--text">
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center ps-3 opacity-40"><i class="pi pi-search"></i></div>
+      </div>
+      <!--v-if-->
+    </div><button data-v-e1ec8838="" data-v-c1886280="" class="h-12 w-8 rounded-full bt primary flex flex-row items-center justify-center h-12 w-8 rounded-full" data-testid="refreshBt"><i data-v-e1ec8838="" class="pi pi-refresh" data-testid="icon"></i>
+      <!--v-if--><span data-v-e1ec8838="" class=""></span>
+    </button>
+  </div>
+  <div data-v-c1886280="" class="relative" style="overflow: auto; max-height: 768px;">
+    <p data-v-c1886280="" class="absolute opacity-0">Pas de data</p>
+    <table data-v-c1886280="" class="w-full border-spacing-0" role="table">
+      <thead data-v-c1886280="" role="rowgroup">
+        <tr data-v-c1886280="" role="row">
+          <th data-v-c1886280="" role="columnheader">Id</th>
+          <th data-v-c1886280="" role="columnheader">Nom</th>
+          <th data-v-c1886280="" role="columnheader">Groupe</th>
+          <th data-v-c1886280="" role="columnheader">Coeff</th>
+          <th data-v-c1886280="" role="columnheader">Rating</th>
+          <th data-v-c1886280="" role="columnheader">Osiris</th>
+        </tr>
+      </thead>
+      <tbody data-v-c1886280="" role="rowgroup" data-testid="records"></tbody>
+    </table>
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`StoreRecordsTable.vue > click on refresh > with refresh bt - with data 1`] = `
+"<div data-v-c1886280="" class="relative w-full">
+  <div data-v-c1886280="" class="flex flex-wrap items-center justify-between bg-regate-primary-50 p-4">
+    <!--v-if-->
+    <div data-v-c1886280="" class="reg-input relative">
+      <!--v-if-->
+      <div class="relative"><input id="reginputtextid-1" role="" type="text" placeholder="Rechercher" class="reg-input--text">
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center ps-3 opacity-40"><i class="pi pi-search"></i></div>
+      </div>
+      <!--v-if-->
+    </div><button data-v-e1ec8838="" data-v-c1886280="" class="h-12 w-8 rounded-full bt primary flex flex-row items-center justify-center h-12 w-8 rounded-full" data-testid="refreshBt"><i data-v-e1ec8838="" class="pi pi-refresh" data-testid="icon"></i>
+      <!--v-if--><span data-v-e1ec8838="" class=""></span>
+    </button>
+  </div>
+  <div data-v-c1886280="" class="relative" style="overflow: auto; max-height: 768px;">
+    <!--v-if-->
+    <table data-v-c1886280="" class="w-full border-spacing-0" role="table">
+      <thead data-v-c1886280="" role="rowgroup">
+        <tr data-v-c1886280="" role="row">
+          <th data-v-c1886280="" role="columnheader">Id</th>
+          <th data-v-c1886280="" role="columnheader">Nom</th>
+          <th data-v-c1886280="" role="columnheader">Groupe</th>
+          <th data-v-c1886280="" role="columnheader">Coeff</th>
+          <th data-v-c1886280="" role="columnheader">Rating</th>
+          <th data-v-c1886280="" role="columnheader">Osiris</th>
+        </tr>
+      </thead>
+      <tbody data-v-c1886280="" role="rowgroup" data-testid="records">
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">BUGD</td>
+          <td data-v-c1886280="" role="cell">BUG DACRON</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6667</td>
+          <td data-v-c1886280="" role="cell">1500</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">BUGM</td>
+          <td data-v-c1886280="" role="cell">BUG MYLAR</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">CAD</td>
+          <td data-v-c1886280="" role="cell">CADET</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7018</td>
+          <td data-v-c1886280="" role="cell">1425</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">C316</td>
+          <td data-v-c1886280="" role="cell">COLLECTIF 316</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7273</td>
+          <td data-v-c1886280="" role="cell">1375</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">MIDS</td>
+          <td data-v-c1886280="" role="cell">MIRROR DOUB + SP</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7273</td>
+          <td data-v-c1886280="" role="cell">1375</td>
+          <td data-v-c1886280="" role="cell">0</td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OBID</td>
+          <td data-v-c1886280="" role="cell">OPEN SKIFF DACRON</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6667</td>
+          <td data-v-c1886280="" role="cell">1500</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OBIC</td>
+          <td data-v-c1886280="" role="cell">OPEN SKIFF MYLAR</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OPTI</td>
+          <td data-v-c1886280="" role="cell">OPTIMIST</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6061</td>
+          <td data-v-c1886280="" role="cell">1650</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OPTE</td>
+          <td data-v-c1886280="" role="cell">OPTIMIST "ECOLE"</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.5882</td>
+          <td data-v-c1886280="" role="cell">1700</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">PIXY</td>
+          <td data-v-c1886280="" role="cell">PIXXY</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6452</td>
+          <td data-v-c1886280="" role="cell">1550</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">RSTD</td>
+          <td data-v-c1886280="" role="cell">RS TERA DACRON</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">TAZS</td>
+          <td data-v-c1886280="" role="cell">TAZ</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7018</td>
+          <td data-v-c1886280="" role="cell">1425</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">TW45</td>
+          <td data-v-c1886280="" role="cell">TWINER <= 4.5</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">ZOOM</td>
+          <td data-v-c1886280="" role="cell">ZOOM 8</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7018</td>
+          <td data-v-c1886280="" role="cell">1425</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+      </tbody>
+    </table>
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`StoreRecordsTable.vue > search > search finish 1`] = `
+"<div data-v-c1886280="" class="relative w-full">
+  <div data-v-c1886280="" class="flex flex-wrap items-center justify-between bg-regate-primary-50 p-4">
+    <!--v-if-->
+    <div data-v-c1886280="" class="reg-input relative">
+      <!--v-if-->
+      <div class="relative"><input id="reginputtextid-2" role="" type="text" placeholder="Rechercher" class="reg-input--text">
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center ps-3 opacity-40"><i class="pi pi-search"></i></div>
+      </div>
+      <!--v-if-->
+    </div>
+    <!--v-if-->
+  </div>
+  <div data-v-c1886280="" class="relative" style="overflow: auto; max-height: 768px;">
+    <!--v-if-->
+    <table data-v-c1886280="" class="w-full border-spacing-0" role="table">
+      <thead data-v-c1886280="" role="rowgroup">
+        <tr data-v-c1886280="" role="row">
+          <th data-v-c1886280="" role="columnheader">Id</th>
+          <th data-v-c1886280="" role="columnheader">Nom</th>
+          <th data-v-c1886280="" role="columnheader">Groupe</th>
+          <th data-v-c1886280="" role="columnheader">Coeff</th>
+          <th data-v-c1886280="" role="columnheader">Rating</th>
+          <th data-v-c1886280="" role="columnheader">Osiris</th>
+        </tr>
+      </thead>
+      <tbody data-v-c1886280="" role="rowgroup" data-testid="searchResult">
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OPTI</td>
+          <td data-v-c1886280="" role="cell">OPTIMIST</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6061</td>
+          <td data-v-c1886280="" role="cell">1650</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OPTE</td>
+          <td data-v-c1886280="" role="cell">OPTIMIST "ECOLE"</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.5882</td>
+          <td data-v-c1886280="" role="cell">1700</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+      </tbody>
+    </table>
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`StoreRecordsTable.vue > search > search start 1`] = `
+"<div data-v-c1886280="" class="relative w-full">
+  <div data-v-c1886280="" class="flex flex-wrap items-center justify-between bg-regate-primary-50 p-4">
+    <!--v-if-->
+    <div data-v-c1886280="" class="reg-input relative">
+      <!--v-if-->
+      <div class="relative"><input id="reginputtextid-2" role="" type="text" placeholder="Rechercher" class="reg-input--text">
+        <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center ps-3 opacity-40"><i class="pi pi-search"></i></div>
+      </div>
+      <!--v-if-->
+    </div>
+    <!--v-if-->
+  </div>
+  <div data-v-c1886280="" class="relative" style="overflow: auto; max-height: 768px;">
+    <!--v-if-->
+    <table data-v-c1886280="" class="w-full border-spacing-0" role="table">
+      <thead data-v-c1886280="" role="rowgroup">
+        <tr data-v-c1886280="" role="row">
+          <th data-v-c1886280="" role="columnheader">Id</th>
+          <th data-v-c1886280="" role="columnheader">Nom</th>
+          <th data-v-c1886280="" role="columnheader">Groupe</th>
+          <th data-v-c1886280="" role="columnheader">Coeff</th>
+          <th data-v-c1886280="" role="columnheader">Rating</th>
+          <th data-v-c1886280="" role="columnheader">Osiris</th>
+        </tr>
+      </thead>
+      <tbody data-v-c1886280="" role="rowgroup" data-testid="records">
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">BUGD</td>
+          <td data-v-c1886280="" role="cell">BUG DACRON</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6667</td>
+          <td data-v-c1886280="" role="cell">1500</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">BUGM</td>
+          <td data-v-c1886280="" role="cell">BUG MYLAR</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">CAD</td>
+          <td data-v-c1886280="" role="cell">CADET</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7018</td>
+          <td data-v-c1886280="" role="cell">1425</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">C316</td>
+          <td data-v-c1886280="" role="cell">COLLECTIF 316</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7273</td>
+          <td data-v-c1886280="" role="cell">1375</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">MIDS</td>
+          <td data-v-c1886280="" role="cell">MIRROR DOUB + SP</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7273</td>
+          <td data-v-c1886280="" role="cell">1375</td>
+          <td data-v-c1886280="" role="cell">0</td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OBID</td>
+          <td data-v-c1886280="" role="cell">OPEN SKIFF DACRON</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6667</td>
+          <td data-v-c1886280="" role="cell">1500</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OBIC</td>
+          <td data-v-c1886280="" role="cell">OPEN SKIFF MYLAR</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OPTI</td>
+          <td data-v-c1886280="" role="cell">OPTIMIST</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6061</td>
+          <td data-v-c1886280="" role="cell">1650</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">OPTE</td>
+          <td data-v-c1886280="" role="cell">OPTIMIST "ECOLE"</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.5882</td>
+          <td data-v-c1886280="" role="cell">1700</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">PIXY</td>
+          <td data-v-c1886280="" role="cell">PIXXY</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6452</td>
+          <td data-v-c1886280="" role="cell">1550</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">RSTD</td>
+          <td data-v-c1886280="" role="cell">RS TERA DACRON</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">TAZS</td>
+          <td data-v-c1886280="" role="cell">TAZ</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7018</td>
+          <td data-v-c1886280="" role="cell">1425</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">TW45</td>
+          <td data-v-c1886280="" role="cell">TWINER <= 4.5</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.6897</td>
+          <td data-v-c1886280="" role="cell">1450</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+        <tr data-v-c1886280="" role="row">
+          <td data-v-c1886280="" role="cell">ZOOM</td>
+          <td data-v-c1886280="" role="cell">ZOOM 8</td>
+          <td data-v-c1886280="" role="cell">LK</td>
+          <td data-v-c1886280="" role="cell">0.7018</td>
+          <td data-v-c1886280="" role="cell">1425</td>
+          <td data-v-c1886280="" role="cell"></td>
+        </tr>
+      </tbody>
+    </table>
+    <!--v-if-->
+  </div>
+</div>"
+`;
