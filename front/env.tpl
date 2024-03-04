@@ -1,0 +1,2 @@
+VITE_BACKEND_URL=http://localhost:8001
+VITE_API_VERSION=api/v1
