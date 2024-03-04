@@ -86,6 +86,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         token_data = TokenData(email=email)
     except JWTError:
         raise credentials_exception
+    
     user = get_user(email=token_data.email)
     if user is None:
         raise credentials_exception
@@ -121,9 +122,10 @@ def raw_register(email: str, password: str) -> Token:
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
+    print(form_data.username, form_data.password)
     return raw_register(form_data.username, form_data.password)
 
-@router.post("/register")
+@router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(form_data: Annotated[UserRegister, Depends()]) -> Token:
     if get_user(form_data.email):
         raise HTTPException(
@@ -132,7 +134,14 @@ async def register(form_data: Annotated[UserRegister, Depends()]) -> Token:
         )
     
     hashed_password = hash_password(form_data.password)
-    db_user = UserModel(email=form_data.email, password=hashed_password, time_updated=func.now())
+    db_user = UserModel(
+        firstname=form_data.firstname,
+        lastname=form_data.lastname,
+        username=form_data.username,
+        email=form_data.email, 
+        password=hashed_password, 
+        time_updated=func.now()
+    )
     db.session.add(db_user)
     db.session.commit()
 

@@ -7,7 +7,7 @@
 					<label for="sepalLength" class="text-white">Longueur Sepal</label>
 					<InputNumber
 						id="sepalLength"
-						v-model="sepalLength"
+						v-model="irisData.sepalLength"
 						inputId="sepalLength"
 						suffix=" cm"
 						showButtons
@@ -42,7 +42,7 @@
 					<label for="sepalWidth" class=" text-white">Largeur Sepal</label>
 					<InputNumber
 						id="sepalWidth"
-						v-model="sepalWidth"
+						v-model="irisData.sepalWidth"
 						inputId="sepalWidth"
 						suffix=" cm"
 						showButtons
@@ -80,7 +80,7 @@
 					<label for="petalLength" class=" text-white">Longueur Pétale</label>
 					<InputNumber
 						id="petalLength"
-						v-model="petalLength"
+						v-model="irisData.petalLength"
 						inputId="petalLength"
 						suffix=" cm"
 						showButtons
@@ -115,7 +115,7 @@
 					<label for="petalWidth" class=" text-white">Largeur Pétale</label>
 					<InputNumber
 						id="petalWidth"
-						v-model="petalWidth"
+						v-model="irisData.petalWidth"
 						inputId="petalWidth"
 						suffix=" cm"
 						showButtons
@@ -153,16 +153,37 @@
 </template>
 
 <script setup lang="ts">
+	import axios from 'axios'
 	import InputNumber from 'primevue/inputnumber'
-	import { ref } from 'vue'
+	import { useToast } from 'primevue/usetoast'
+	import { reactive, toValue } from 'vue'
 
-	const sepalLength = ref<number>(1)
-	const sepalWidth = ref<number>(1)
-	const petalLength = ref<number>(1)
-	const petalWidth = ref<number>(1)
+	import { API_VERSION } from '@/constants'
 
-	function predict() {
+	const toast = useToast()
 
+	const irisData = reactive({
+		sepalLength: 0,
+		sepalWidth : 0,
+		petalLength: 0,
+		petalWidth : 0,
+	})
+
+
+	async function predict() {
+		const dataSend = {
+			iris: [
+				{ ...toValue(irisData) },
+			],
+		}
+
+		try {
+			const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${API_VERSION}/iris/predict`, dataSend)
+
+			toast.add({ severity: 'info', summary: 'Prédiction', detail: data.result[0], life: 3000 })
+		} catch (e: any) {
+			toast.add({ severity: 'error', summary: 'Erreur', detail: 'Vous devez vous connecter', life: 3000 })
+		}
 	}
 </script>
 

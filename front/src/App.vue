@@ -7,6 +7,7 @@
 		</div>
 	</div>
 	<LoginView />
+	<SignupView />
 	<Toast
 		:pt="{
 			root: {
@@ -19,12 +20,14 @@
 <script setup lang="ts">
 	import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 	import Toast from 'primevue/toast'
-	import { ref, watch } from 'vue'
+	import { onMounted, ref, watch } from 'vue'
 	import { useRoute } from 'vue-router'
 
 	import NavBar from '@/components/Navbar.vue'
+	import { setBearerHeader, useAuth } from '@/store/auth'
 	import { useUI } from '@/store/ui'
 	import LoginView from '@/views/LoginView.vue'
+	import SignupView from '@/views/SignupView.vue'
 
 	const route = useRoute()
 	const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -32,6 +35,7 @@
 	const background = ref('/background-money.jpg')
 
 	const uiStore = useUI()
+	const auth = useAuth()
 
 	function closeToast() {
 		uiStore.toastParam = undefined
@@ -41,6 +45,10 @@
 		() => route.meta.background,
 		bg => background.value = String(bg),
 	)
+
+	onMounted(() => {
+		if (auth.token) setBearerHeader(auth.token)
+	})
 </script>
 
 <style scoped lang="scss">

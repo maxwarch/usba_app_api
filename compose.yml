@@ -17,7 +17,7 @@ services:
       - db_user
       - db_dbname
 
-  fastapi:
+  back:
     container_name: fastapi
     restart: always
     build: ./api
@@ -38,6 +38,28 @@ services:
       - db_password
       - db_user
       - db_dbname
+    # networks:
+    #   - api
+
+  front:
+    build:
+      context: front/
+      target: prod
+      args:
+        # inject the value provided by your root .env file, or an environment variable
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL}
+    env_file:
+      - ./front/.env
+    ports:
+      - "80:80"
+    # depends_on:
+    #   - back
+    # networks:
+    #   - api
+
+# networks:
+#   api:
+#     driver: bridge
 
 secrets:
   db_password:

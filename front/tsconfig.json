@@ -6,7 +6,6 @@
 		},
 		"types": [
 			"vitest/globals",
-			"vite-plugin-pwa/client",
 			"@testing-library/jest-dom",
 			"vite/client",
 			"node"

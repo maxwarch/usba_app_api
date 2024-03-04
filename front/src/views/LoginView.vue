@@ -23,12 +23,12 @@
 					<div>
 						<div class="mb-4">
 							<label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
-							<InputText class="input-text" autofocus></InputText>
+							<InputText  v-model="user.username" class="input-text" autofocus></InputText>
 						</div>
 
 						<div class="mb-4">
 							<label for="password" class="mb-1 block text-sm font-medium text-gray-700">Mot de passe</label>
-							<InputText class="input-text"></InputText>
+							<InputText  v-model="user.password" class="input-text"></InputText>
 						</div>
 
 						<div class="mb-4 flex items-center">
@@ -52,7 +52,7 @@
 				<div class="m-2 w-full max-w-sm rounded-lg bg-white p-6">
 					<div class="mb-4">
 						<label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
-						<InputText class="input-text" autofocus></InputText>
+						<InputText v-model="user.email" class="input-text" autofocus></InputText>
 					</div>
 					<button class="w-full rounded-lg bg-matisse-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-matisse-700 focus:outline-none focus:ring-4 focus:ring-matisse-300" @click="submitForgotPassword">Envoyer</button>
 
@@ -71,14 +71,22 @@
 <script lang="ts" setup>
 	import Dialog from 'primevue/dialog'
 	import InputText from 'primevue/inputtext'
-	import { ref } from 'vue'
+	import { reactive, ref } from 'vue'
 
+	import { UserLogin, useAuth } from '@/store/auth'
 	import { useUI } from '@/store/ui'
 
 	const uiStore = useUI()
+	const auth = useAuth()
 	const toggleForgotPassword = ref<boolean>(false)
 
-	function submit() {
+	const user: UserLogin = reactive({
+		username: '',
+		password: '',
+	})
+
+	async function submit() {
+		await auth.login(user)
 		uiStore.loginVisible = false
 	}
 

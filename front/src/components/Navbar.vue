@@ -15,15 +15,22 @@
 				</div>
 			</div>
 		</div>
-		<div class="ml-auto flex justify-end">
-			<a class="pi pi-users primary__bg-transparent cursor-pointer pt-4 text-3xl transition-transform hover:scale-110" @click="uiStore.loginVisible = true"></a>
+
+		<div v-if="auth.isLogin" class="ml-auto flex justify-end">
+			<a class="pi pi-users cursor-pointer pt-4 text-3xl transition-transform hover:scale-110" @click="uiStore.loginVisible = true"></a>
+		</div>
+		<div v-else class="ml-auto flex items-center justify-end gap-8">
+			<a class="cursor-pointer hover:text-gray-200" @click="uiStore.loginVisible = true">Login</a>
+			<a class="cursor-pointer rounded-full bg-matisse-950 p-2 px-4 hover:bg-matisse-700" @click="uiStore.registerVisible = true">Inscription</a>
 		</div>
 	</nav>
 </template>
 
 <script lang="ts" setup>
+	import { useAuth } from '@/store/auth'
 	import { useUI } from '@/store/ui'
 	const uiStore = useUI()
+	const auth = useAuth()
 </script>
 
 <style lang="scss" scoped>

@@ -12,7 +12,7 @@
 	import isArray from 'lodash/isArray'
 	import { computed } from 'vue'
 
-	import { ErrorInfoInput } from '@/components/inputs/IErrorProps'
+	import { ErrorInfoInput } from '@/types'
 
 	interface Props {
 		errorInfo?: ErrorInfoInput
@@ -23,7 +23,7 @@
 	const errorComputed = computed(() => {
 		return Object.assign({
 			errorText     : 'Erreur',
-			errorTextClass: 'reg-input--error-text',
+			errorTextClass: 'text-red-500 text-xs italic absolute',
 		}, props.errorInfo)
 	})
 </script>
