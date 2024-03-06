@@ -10,9 +10,7 @@ const env = { ...process.env }
 
 export default defineConfig({
 	define: {
-		'process.env'   : env,
-		VITE_BACKEND_URL: env.VITE_BACKEND_URL,
-		VITE_API_VERSION: env.VITE_API_VERSION,
+		'process.env': env,
 	},
 	plugins: [
 		dynamicImport(),

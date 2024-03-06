@@ -70,9 +70,10 @@
 					<div class="my-4 mt-6 flex items-center">
 						<input
 							id="remember-me"
+							v-model="rememberMe"
 							type="checkbox"
 							class="mr-2 h-4 w-4 text-matisse-600 focus:ring-matisse-500/0"
-							checked>
+						>
 						<label for="remember-me" class="!mb-0">Se souvenir de moi</label>
 					</div>
 
@@ -90,7 +91,7 @@
 	import Dialog from 'primevue/dialog'
 	import InputText from 'primevue/inputtext'
 	import Password from 'primevue/password'
-	import { computed, reactive } from 'vue'
+	import { computed, reactive, ref } from 'vue'
 
 	import ErrorText from '@/components/ErrorText.vue'
 	import { User, useAuth } from '@/store/auth'
@@ -105,6 +106,8 @@
 		firstname: '',
 		lastname : '',
 	})
+
+	const rememberMe = ref<boolean>(true)
 
 	const rules = {
 		email: {
@@ -129,9 +132,10 @@
 
 	async function submit() {
 		if (await v$.value.$validate()) {
-			const dataSend = omitBy(user, isEmpty)
-			const { success, data } = await auth.register(dataSend)
-			//uiStore.loginVisible = false
+			const dataSend = omitBy(user, isEmpty) as User
+			const { success } = await auth.register(dataSend)
+			auth.setRememberMe(rememberMe.value)
+			if (success) uiStore.registerVisible = false
 		}
 	}
 </script>

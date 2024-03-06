@@ -28,15 +28,28 @@
 
 						<div class="mb-4">
 							<label for="password" class="mb-1 block text-sm font-medium text-gray-700">Mot de passe</label>
-							<InputText  v-model="user.password" class="input-text"></InputText>
+							<Password
+								v-model="user.password"
+								toggleMask
+								:pt="{
+									root: {
+										class: 'inline-flex relative w-full'
+									},
+									input: {
+										root: {
+											class: 'input-text'
+										}
+									}
+								}"/>
 						</div>
 
 						<div class="mb-4 flex items-center">
 							<input
 								id="remember-me"
+								v-model="rememberMe"
 								type="checkbox"
 								class="h-4 w-4 text-matisse-600 focus:ring-matisse-500/50"
-								checked>
+							>
 							<label for="remember-me" class="ml-2 text-sm text-gray-700">Se souvenir de moi</label>
 						</div>
 
@@ -52,7 +65,7 @@
 				<div class="m-2 w-full max-w-sm rounded-lg bg-white p-6">
 					<div class="mb-4">
 						<label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
-						<InputText v-model="user.email" class="input-text" autofocus></InputText>
+						<InputText v-model="userForgotEmail" class="input-text" autofocus></InputText>
 					</div>
 					<button class="w-full rounded-lg bg-matisse-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-matisse-700 focus:outline-none focus:ring-4 focus:ring-matisse-300" @click="submitForgotPassword">Envoyer</button>
 
@@ -71,6 +84,7 @@
 <script lang="ts" setup>
 	import Dialog from 'primevue/dialog'
 	import InputText from 'primevue/inputtext'
+	import Password from 'primevue/password'
 	import { reactive, ref } from 'vue'
 
 	import { UserLogin, useAuth } from '@/store/auth'
@@ -79,15 +93,19 @@
 	const uiStore = useUI()
 	const auth = useAuth()
 	const toggleForgotPassword = ref<boolean>(false)
+	const rememberMe = ref<boolean>(true)
 
 	const user: UserLogin = reactive({
 		username: '',
 		password: '',
 	})
 
+	const userForgotEmail = ref<string>()
+
 	async function submit() {
-		await auth.login(user)
-		uiStore.loginVisible = false
+		const { success } = await auth.login(user)
+		auth.setRememberMe(rememberMe.value)
+		if (success) uiStore.loginVisible = false
 	}
 
 	function submitForgotPassword() {
@@ -96,6 +114,6 @@
 </script>
 <style scoped lang="scss">
 :deep(.input-text){
-	@apply border rounded-l-md border-gray-300 p-2 focus:outline-0 focus:outline-none focus:ring-0 w-full
+	@apply border rounded-lg border-gray-300 p-2 focus:outline-0 focus:outline-none focus:ring-0 w-full
 }
 </style>

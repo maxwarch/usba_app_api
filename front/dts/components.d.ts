@@ -13,15 +13,8 @@ declare module 'vue' {
     LoginView: typeof import('./../src/views/LoginView.vue')['default']
     Navbar: typeof import('./../src/components/Navbar.vue')['default']
     PredictView: typeof import('./../src/views/PredictView.vue')['default']
-    RegAutocomplete: typeof import('./../src/components/inputs/RegAutocomplete.vue')['default']
-    RegButton: typeof import('./../src/components/inputs/RegButton.vue')['default']
-    RegErrorText: typeof import('./../src/components/inputs/RegErrorText.vue')['default']
-    RegInputText: typeof import('./../src/components/inputs/RegInputText.vue')['default']
-    RegSwitch: typeof import('./../src/components/inputs/RegSwitch.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SideBar: typeof import('./../src/components/SideBar.vue')['default']
     SignupView: typeof import('./../src/views/SignupView.vue')['default']
-    StoreRecordsTable: typeof import('./../src/components/StoreRecordsTable.vue')['default']
   }
 }

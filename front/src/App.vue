@@ -37,6 +37,8 @@
 	const uiStore = useUI()
 	const auth = useAuth()
 
+	console.log(import.meta.env)
+
 	function closeToast() {
 		uiStore.toastParam = undefined
 	}
@@ -47,6 +49,7 @@
 	)
 
 	onMounted(() => {
+		auth.restoreToken()
 		if (auth.token) setBearerHeader(auth.token)
 	})
 </script>

@@ -28,11 +28,11 @@ export function setBearerHeader(token: string) {
 export const useAuth = defineStore('auth', {
 	state: () => ({
 		user : undefined as User | undefined,
-    token: undefined as string | undefined,
+    token: null as string | null,
 	}),
-  persist: true,
+  //persist: true,
 	getters: {
-    isLogin: (state) => state.token !== undefined,
+    isLogin: (state) => state.token !== null,
 	},
 	actions: {
     // 321654sdfg
@@ -54,7 +54,6 @@ export const useAuth = defineStore('auth', {
     async register(userData: User): Promise<APIResponse<null>> {
       const { status, data } = await axios.post(`${API_URL}/auth/register`, null, {
         params: { ...userData },
-        //headers,
       })
 
       const success = status == 201
@@ -65,6 +64,28 @@ export const useAuth = defineStore('auth', {
       }
 
       return { success, data }
+    },
+
+    setRememberMe(val: boolean) {
+      if (val && this.token) {
+        localStorage.setItem('token', JSON.stringify(this.token))
+      } else if (this.token) {
+        sessionStorage.setItem('token', JSON.stringify(this.token))
+      } else {
+        localStorage.removeItem('token')
+        sessionStorage.removeItem('token')
+      }
+    },
+
+    restoreToken() {
+      let token = null
+      if (localStorage.getItem('token')) {
+        token = localStorage.getItem('token')
+      } else if (sessionStorage.getItem('token')) {
+        token = sessionStorage.getItem('token')
+      }
+
+      this.token = token
     },
 	},
 })

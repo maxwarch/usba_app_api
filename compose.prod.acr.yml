@@ -1,0 +1,42 @@
+#docker-compose --project-name usba --file=compose.prod.acr.yml push
+#acrusba.azurecr.io
+version: '3.8'
+services:
+  back:
+    container_name: back
+    image: acrusba.azurecr.io/back
+    platform: linux/amd64
+    restart: always
+    build: ./api
+    ports:
+      - "8001:8001"
+    environment:
+      DB_USER_FILE: /run/secrets/db_user
+      DB_PASSWORD_FILE: /run/secrets/db_password
+      DB_NAME_FILE: /run/secrets/db_dbname
+    #command: uvicorn main:app --proxy-headers --host 0.0.0.0 --port 8001
+    secrets:
+      - db_password
+      - db_user
+      - db_dbname
+
+  front:
+    container_name: front
+    image: acrusba.azurecr.io/front
+    platform: linux/amd64
+    build:
+      context: front/
+      target: prod
+      args:
+        - VITE_BACKEND_URL=${VITE_BACKEND_URL}
+        - VITE_API_VERSION=${VITE_API_VERSION}
+    ports:
+      - "80:80"
+
+secrets:
+  db_password:
+    file: api/secrets/db_password.secret
+  db_user:
+    file: api/secrets/db_user.secret
+  db_dbname:
+    file: api/secrets/db_dbname.secret

@@ -29,3 +29,7 @@ RUN cd ${APP_HOME} && chmod +x migrate.sh
 USER app
 
 EXPOSE 8001
+
+CMD ["uvicorn", "main:app", "--proxy-headers", "--host", "0.0.0.0", "--port", "8001"]
+
+# az container create --resource-group RG_KUILM --name usba-bare-api --image acrusba.azurecr.io/bare-api --cpu 1 --memory 1 --registry-login-server acrusba.azurecr.io --registry-username acrusba --registry-password zrFNfO5HvCSTgLGS80zoPQi9OQoH9ueE/UK+8vMWQU+ACRCBhoDO --ip-address Public --ports 8001
