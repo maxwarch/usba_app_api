@@ -5,9 +5,10 @@ import urllib.parse
 
 DB_NAME = get_env('DB_NAME')
 DB_USER = get_env('DB_USER')
+DB_IP = get_env('DB_IP')
 DB_PASSWORD = urllib.parse.quote_plus(get_env('DB_PASSWORD'))
 
-SQLALCHEMY_DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@db/{DB_NAME}'
+SQLALCHEMY_DATABASE_URL = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_IP}/{DB_NAME}'
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL

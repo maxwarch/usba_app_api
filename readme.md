@@ -18,3 +18,6 @@
 
 ## Redémarre le groupe. Pas possible de redémarrer un seul conteneur
 `az container restart --resource-group RG_KUILM --name usbaGroup --container-name back`
+
+## DOC YAML
+https://learn.microsoft.com/en-us/azure/container-instances/container-instances-reference-yaml

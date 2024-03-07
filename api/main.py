@@ -17,8 +17,7 @@ app.add_middleware(
 )
 
 # to avoid csrftokenError
-print('************', database.SQLALCHEMY_DATABASE_URL)
 app.add_middleware(DBSessionMiddleware, db_url=database.SQLALCHEMY_DATABASE_URL)
 
-#app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(api_router_v1, prefix="/api/v1")

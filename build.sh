@@ -4,7 +4,7 @@ ACR=acrusba
 az login
 
 echo "*** Création du .env général"
-sed -n p front/.env api/.env > .env
+sed -n p front/.env.production api/.env > .env
 echo "*** Build"
 docker compose --file=${YAML_FILE} build
 echo "*** Login sur l'ACR ${ACR}"
