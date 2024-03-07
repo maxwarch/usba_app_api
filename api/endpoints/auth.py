@@ -1,18 +1,20 @@
-from typing import Annotated
+import secrets
+from typing import Annotated, AnyStr
 
 import bcrypt
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.encoders import jsonable_encoder
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_sqlalchemy import db
 from jose import JWTError, jwt
 from pydantic import BaseModel
 from sqlalchemy import func
 
 from utils.environment import get_env
+from utils.auth_bearer import JWTBearer
 from models.user import User, UserRegister
-from models.migrations import UserModel
+from models.migrations import RefreshTokenModel, UserModel
 
 
 SECRET_KEY = get_env('JWT_SECRET_KEY')
@@ -22,6 +24,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(get_env('JWT_ACCESS_TOKEN_EXPIRE_MINUTES'))
 ''' TOKEN SCHEMA'''
 class Token(BaseModel):
     access_token: str
+    refresh_token: str
     token_type: str
 
 class TokenData(BaseModel):
@@ -115,14 +118,26 @@ def raw_register(email: str, password: str) -> Token:
     access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
-    return Token(access_token=access_token, token_type="bearer")
+    refresh_token = create_refresh_token(user)
+    return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
+
+def create_refresh_token(user: User) -> AnyStr:
+    refresh_token = secrets.token_hex(128)
+    db_refresh_token = RefreshTokenModel(
+        email = user.email,
+        refresh_token = refresh_token,
+        date_valid = timedelta(hours=1)
+    )
+    db.session.add(db_refresh_token)
+    db.session.commit()
+    
+    return refresh_token
 
 ''' ROUTES '''
 @router.post("/login")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
-    print(form_data.username, form_data.password)
     return raw_register(form_data.username, form_data.password)
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
@@ -146,3 +161,9 @@ async def register(form_data: Annotated[UserRegister, Depends()]) -> Token:
     db.session.commit()
 
     return raw_register(form_data.email, form_data.password)
+
+security = HTTPBearer()
+
+@router.post("/refresh", status_code=status.HTTP_200_OK)
+async def refresh_token(credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)]):
+    return {"scheme": credentials.scheme, "credentials": credentials.credentials}

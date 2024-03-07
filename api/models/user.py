@@ -10,7 +10,7 @@ class UserLogin(BaseModel):
         from_attributes = True
 
 class UserRegister(UserLogin):
-    email: Annotated[Union[str, None], EmailStr] = None
+    email: Annotated[Union[str, None], EmailStr]
     username: Annotated[Union[str, None], StringConstraints(min_length=3, pattern="[a-zA-Z0-9_-]+$")] = None
     firstname: Annotated[Union[str, None], StringConstraints(min_length=3)] = None
     lastname: Annotated[Union[str, None], StringConstraints(min_length=3)] = None
