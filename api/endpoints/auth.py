@@ -27,6 +27,9 @@ class Token(BaseModel):
     refresh_token: str
     token_type: str
 
+class RefreshToken(BaseModel):
+    refresh_token: str
+
 class TokenData(BaseModel):
     username: str | None = None
 
@@ -46,7 +49,6 @@ def hash_password(password):
 
 # Check if the provided password matches the stored password (hashed)
 def verify_password(plain_password, hashed_password):
-    print(plain_password, hashed_password)
     plain_encode = plain_password.encode('utf-8')
     hashed_encode = hashed_password.encode('utf-8')
     return bcrypt.checkpw(plain_encode, hashed_encode)
@@ -65,15 +67,56 @@ def authenticate_user(email: str, password: str):
         return False
     return user
 
+def create_all_token(email: AnyStr, refresh_token_sent: RefreshToken = None):
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": email}, expires_delta=access_token_expires
+    )
+    refresh_token = create_or_update_refresh_token(email, refresh_token_sent)
+    return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
+
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
+    
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
         expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+def create_or_update_refresh_token(email: AnyStr, refresh_token_sent: RefreshToken = None) -> AnyStr:
+    if refresh_token_sent:
+        db_token_sess = db.session.query(RefreshTokenModel).filter(RefreshTokenModel.email == email, RefreshTokenModel.refresh_token == refresh_token_sent.refresh_token)
+
+        db_token = db_token_sess.one_or_none()
+        if not db_token:
+            raise HTTPException(status_code=403, detail="Invalid refresh token.")
+
+    refresh_token = secrets.token_hex(128)
+    date_valid = datetime.now(timezone.utc) + timedelta(hours=1)
+
+    db_refresh_token = RefreshTokenModel(
+        email = email,
+        refresh_token = refresh_token,
+        date_valid = date_valid
+    )
+
+    db_token_sess = db.session.query(RefreshTokenModel).filter(RefreshTokenModel.email == email)
+    db_token = db_token_sess.one_or_none()
+    if not db_token:
+        db.session.add(db_refresh_token)
+    else:
+        db_token_sess.update({
+            RefreshTokenModel.refresh_token: refresh_token, 
+            RefreshTokenModel.date_valid: date_valid
+        }, synchronize_session=False)
+        
+    db.session.commit()
+    
+    return refresh_token
 
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
@@ -102,8 +145,6 @@ async def get_current_active_user(
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
-
-
 router = APIRouter()
 
 def raw_register(email: str, password: str) -> Token:
@@ -114,24 +155,9 @@ def raw_register(email: str, password: str) -> Token:
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
-    )
-    refresh_token = create_refresh_token(user)
-    return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")
-
-def create_refresh_token(user: User) -> AnyStr:
-    refresh_token = secrets.token_hex(128)
-    db_refresh_token = RefreshTokenModel(
-        email = user.email,
-        refresh_token = refresh_token,
-        date_valid = timedelta(hours=1)
-    )
-    db.session.add(db_refresh_token)
-    db.session.commit()
     
-    return refresh_token
+    return create_all_token(user.email)
+
 
 ''' ROUTES '''
 @router.post("/login")
@@ -165,5 +191,11 @@ async def register(form_data: Annotated[UserRegister, Depends()]) -> Token:
 security = HTTPBearer()
 
 @router.post("/refresh", status_code=status.HTTP_200_OK)
-async def refresh_token(credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)]):
-    return {"scheme": credentials.scheme, "credentials": credentials.credentials}
+async def refresh_token(credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)], token: RefreshToken) -> Token:
+    try:
+        bearer = JWTBearer()
+        email = bearer.get_email(credentials.credentials)
+
+        return create_all_token(email, token)
+    except JWTError:
+        raise HTTPException(status_code=403, detail="Invalid token.")

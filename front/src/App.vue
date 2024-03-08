@@ -37,7 +37,7 @@
 	const uiStore = useUI()
 	const auth = useAuth()
 
-	console.log(import.meta.env)
+	// console.log(import.meta.env)
 
 	function closeToast() {
 		uiStore.toastParam = undefined

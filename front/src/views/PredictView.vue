@@ -1,5 +1,5 @@
 <template>
-	<div class="mx-auto flex w-1/2 flex-col gap-16 rounded-lg bg-white/20 p-10">
+	<div class="mx-auto flex w-10/12 flex-col gap-16 rounded-lg bg-white/20 p-10 lg:w-2/3">
 		<h1 class="text-2xl font-bold text-white">Etes-vous élligible ?</h1>
 		<div class="flex flex-col gap-4">
 			<div class="grid grid-cols-2 gap-8">

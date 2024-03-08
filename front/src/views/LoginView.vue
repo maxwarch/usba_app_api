@@ -86,18 +86,20 @@
 	import InputText from 'primevue/inputtext'
 	import Password from 'primevue/password'
 	import { reactive, ref } from 'vue'
+	import { useRouter } from 'vue-router'
 
 	import { UserLogin, useAuth } from '@/store/auth'
 	import { useUI } from '@/store/ui'
 
 	const uiStore = useUI()
 	const auth = useAuth()
+	const router = useRouter()
 	const toggleForgotPassword = ref<boolean>(false)
 	const rememberMe = ref<boolean>(true)
 
 	const user: UserLogin = reactive({
-		username: '',
-		password: '',
+		username: 'a@a.fr',
+		password: 'azerty1234',
 	})
 
 	const userForgotEmail = ref<string>()
@@ -106,6 +108,8 @@
 		const { success } = await auth.login(user)
 		auth.setRememberMe(rememberMe.value)
 		if (success) uiStore.loginVisible = false
+		if (uiStore.toRoute)
+			router.push(uiStore.toRoute.fullPath)
 	}
 
 	function submitForgotPassword() {

@@ -22,6 +22,10 @@ class ParamIris(BaseModel):
 
 router = APIRouter()
 
+@router.get('/test', dependencies=[Depends(JWTBearer())])
+async def test():
+    return {"status": "ok"}
+
 @router.post('/predict', dependencies=[Depends(JWTBearer())])
 async def predict(p: ParamIris):
     model: Pipeline = load('./model.pkl')

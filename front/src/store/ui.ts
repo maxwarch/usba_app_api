@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ToastMessageOptions } from 'primevue/toast'
+import { RouteLocationNormalized } from 'vue-router'
 
 
 export const useUI = defineStore('ui', {
@@ -8,6 +9,7 @@ export const useUI = defineStore('ui', {
 		loading        : false,
 		loginVisible   : false,
 		registerVisible: false,
+		toRoute        : <RouteLocationNormalized | undefined> undefined,
 	}),
 	getters: {
 

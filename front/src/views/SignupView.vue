@@ -102,7 +102,7 @@
 
 	const user: User = reactive({
 		email    : 'a@a.fr',
-		password : '321654sdfg',
+		password : 'azerty1234',
 		firstname: '',
 		lastname : '',
 	})

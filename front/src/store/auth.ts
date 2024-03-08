@@ -27,8 +27,9 @@ export function setBearerHeader(token: string) {
 
 export const useAuth = defineStore('auth', {
 	state: () => ({
-		user : undefined as User | undefined,
-    token: null as string | null,
+		user        : undefined as User | undefined,
+    token       : null as string | null,
+    refreshToken: null as string | null,
 	}),
   //persist: true,
 	getters: {
@@ -45,10 +46,20 @@ export const useAuth = defineStore('auth', {
 
       if (success) {
         this.token = data.access_token
+        this.refreshToken = data.refresh_token
         if (this.token) setBearerHeader(this.token)
       }
 
       return { success, data }
+    },
+
+    logout() {
+      this.token = null
+      this.refreshToken = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('refreshToken')
     },
 
     async register(userData: User): Promise<APIResponse<null>> {
@@ -60,6 +71,7 @@ export const useAuth = defineStore('auth', {
 
       if (success) {
         this.token = data.access_token
+        this.refreshToken = data.refresh_token
         if (this.token) setBearerHeader(this.token)
       }
 
@@ -69,23 +81,26 @@ export const useAuth = defineStore('auth', {
     setRememberMe(val: boolean) {
       if (val && this.token) {
         localStorage.setItem('token', JSON.stringify(this.token))
+        localStorage.setItem('refreshToken', JSON.stringify(this.refreshToken))
       } else if (this.token) {
         sessionStorage.setItem('token', JSON.stringify(this.token))
+        sessionStorage.setItem('refreshToken', JSON.stringify(this.refreshToken))
       } else {
         localStorage.removeItem('token')
+        localStorage.removeItem('refreshToken')
         sessionStorage.removeItem('token')
+        sessionStorage.removeItem('refreshToken')
       }
     },
 
     restoreToken() {
-      let token = null
       if (localStorage.getItem('token')) {
-        token = localStorage.getItem('token')
+        this.token = localStorage.getItem('token')
+        this.refreshToken = localStorage.getItem('refreshToken')
       } else if (sessionStorage.getItem('token')) {
-        token = sessionStorage.getItem('token')
+        this.token = sessionStorage.getItem('token')
+        this.refreshToken = sessionStorage.getItem('refreshToken')
       }
-
-      this.token = token
     },
 	},
 })

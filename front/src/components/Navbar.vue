@@ -17,20 +17,55 @@
 		</div>
 
 		<div v-if="auth.isLogin" class="ml-auto flex justify-end">
-			<a class="pi pi-users cursor-pointer pt-4 text-3xl transition-transform hover:scale-110" @click="uiStore.loginVisible = true"></a>
+			<Avatar
+				icon="pi pi-user"
+				class="cursor-pointer border-none bg-transparent"
+				size="large"
+				shape="circle"
+				@click="toggle" />
+			<Menu
+				ref="menu"
+				:model="items"
+				:popup="true" />
 		</div>
 		<div v-else class="ml-auto flex items-center justify-end gap-8">
 			<a class="cursor-pointer hover:text-gray-200" @click="uiStore.loginVisible = true">Login</a>
-			<a class="cursor-pointer rounded-full bg-matisse-950 p-2 px-4 hover:bg-matisse-700" @click="uiStore.registerVisible = true">Inscription</a>
+			<a class="cursor-pointer rounded-full bg-matisse-800 p-2 px-4 hover:bg-matisse-700" @click="uiStore.registerVisible = true">Inscription</a>
 		</div>
 	</nav>
 </template>
 
 <script lang="ts" setup>
+	import Avatar from 'primevue/avatar'
+	import Menu from 'primevue/menu'
+	import { ref } from 'vue'
+	import { useRouter } from 'vue-router'
+
 	import { useAuth } from '@/store/auth'
 	import { useUI } from '@/store/ui'
+
+	const router = useRouter()
 	const uiStore = useUI()
 	const auth = useAuth()
+
+	const menu = ref()
+	const items = ref([
+		{
+			label: 'Profil',
+		},
+		{
+			label  : 'Logout',
+			command: () => {
+				auth.logout()
+				if (router.currentRoute.value.meta.requiresAuth)
+					router.push('/')
+			},
+		},
+	])
+
+	const toggle = (event: MouseEvent) => {
+		menu.value.toggle(event)
+	}
 </script>
 
 <style lang="scss" scoped>
