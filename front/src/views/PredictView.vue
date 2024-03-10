@@ -153,12 +153,12 @@
 </template>
 
 <script setup lang="ts">
-	import axios from 'axios'
 	import InputNumber from 'primevue/inputnumber'
 	import { useToast } from 'primevue/usetoast'
 	import { reactive, toValue } from 'vue'
 
 	import { API_VERSION } from '@/constants'
+	import { api } from '@/store/interceptor'
 
 	const toast = useToast()
 
@@ -178,7 +178,7 @@
 		}
 
 		try {
-			const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/${API_VERSION}/iris/predict`, dataSend)
+			const { data } = await api.post(`/${API_VERSION}/iris/predict`, dataSend)
 
 			toast.add({ severity: 'info', summary: 'Prédiction', detail: data.result[0], life: 3000 })
 		} catch (e: any) {

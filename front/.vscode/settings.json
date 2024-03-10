@@ -6,7 +6,7 @@
   "json.validate.enable": true,
   "editor.insertSpaces": false,
   "editor.formatOnSave": true,
-  "editor.tabSize": 4,
+  "editor.tabSize": 2,
   "eslint.format.enable": true,
   "eslint.run": "onSave",
   "editor.codeActionsOnSave": {

@@ -24,7 +24,7 @@
 	import { useRoute } from 'vue-router'
 
 	import NavBar from '@/components/Navbar.vue'
-	import { setBearerHeader, useAuth } from '@/store/auth'
+	import { useAuth } from '@/store/auth'
 	import { useUI } from '@/store/ui'
 	import LoginView from '@/views/LoginView.vue'
 	import SignupView from '@/views/SignupView.vue'
@@ -50,7 +50,6 @@
 
 	onMounted(() => {
 		auth.restoreToken()
-		if (auth.token) setBearerHeader(auth.token)
 	})
 </script>
 

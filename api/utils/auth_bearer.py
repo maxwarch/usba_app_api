@@ -26,7 +26,7 @@ class JWTBearer(HTTPBearer):
             if not credentials.scheme == "Bearer":
                 raise HTTPException(status_code=403, detail="Invalid authentication scheme.")
             if not self.verify_jwt(credentials.credentials):
-                raise HTTPException(status_code=498, detail="Invalid token or expired token.")
+                raise HTTPException(status_code=401, detail="Invalid token or expired token.")
             return credentials.credentials
         else:
             raise HTTPException(status_code=403, detail="Invalid authorization code.")
@@ -34,12 +34,13 @@ class JWTBearer(HTTPBearer):
     def verify_jwt(self, jwtoken: str) -> bool:
         return self.get_email(jwtoken) != None
     
-    def get_email(self, jwtoken: str) -> AnyStr | None:
+    def get_email(self, jwtoken: str, verify_exp: bool = True) -> AnyStr | None:
         email = None
         try:
-            payload = jwt.decode(jwtoken, SECRET_KEY, algorithms=[ALGORITHM])
+            payload = jwt.decode(jwtoken, SECRET_KEY, algorithms=[ALGORITHM], options={'verify_exp': verify_exp})
             email: str = payload.get("sub")
         except JWTError:
+            print(JWTError)
             email = None
 
         return email

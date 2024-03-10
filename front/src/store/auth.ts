@@ -1,7 +1,7 @@
-import axios from 'axios'
+/* eslint-disable camelcase */
 import { defineStore } from 'pinia'
 
-import { API_URL } from '@/constants'
+import { api } from '@/store/interceptor'
 import { APIResponse } from '@/types'
 
 export type User = {
@@ -19,9 +19,18 @@ const headers = {
   'Content-Type': 'application/x-www-form-urlencoded',
 }
 
-export function setBearerHeader(token: string) {
-  axios.defaults.headers.common = {
-    'Authorization': `Bearer ${token}`,
+export function storeToken(data: {access_token: string, refresh_token: string}): void {
+  const store = useAuth()
+  const { access_token, refresh_token } = data
+  store.token = access_token
+  store.refreshToken = refresh_token
+
+  if (localStorage.getItem('token')) {
+    localStorage.setItem('token', store.token)
+    localStorage.setItem('refreshToken', store.refreshToken)
+  } else {
+    sessionStorage.setItem('token', store.token)
+    sessionStorage.setItem('refreshToken', store.refreshToken)
   }
 }
 
@@ -38,17 +47,12 @@ export const useAuth = defineStore('auth', {
 	actions: {
     // 321654sdfg
     async login(userData: UserLogin): Promise<APIResponse<null>> {
-      const { status, data } = await axios.post(`${API_URL}/auth/login`, userData, {
+      const { status, data } = await api.post('/auth/login', userData, {
         headers,
       })
 
       const success = status == 200
-
-      if (success) {
-        this.token = data.access_token
-        this.refreshToken = data.refresh_token
-        if (this.token) setBearerHeader(this.token)
-      }
+      if (success) storeToken(data)
 
       return { success, data }
     },
@@ -56,40 +60,29 @@ export const useAuth = defineStore('auth', {
     logout() {
       this.token = null
       this.refreshToken = null
-      localStorage.removeItem('token')
-      localStorage.removeItem('refreshToken')
-      sessionStorage.removeItem('token')
-      sessionStorage.removeItem('refreshToken')
+      this.clearStorage()
     },
 
     async register(userData: User): Promise<APIResponse<null>> {
-      const { status, data } = await axios.post(`${API_URL}/auth/register`, null, {
+      const { status, data } = await api.post('/auth/register', null, {
         params: { ...userData },
       })
 
       const success = status == 201
-
-      if (success) {
-        this.token = data.access_token
-        this.refreshToken = data.refresh_token
-        if (this.token) setBearerHeader(this.token)
-      }
+      if (success) storeToken(data)
 
       return { success, data }
     },
 
     setRememberMe(val: boolean) {
+      this.clearStorage()
+
       if (val && this.token) {
-        localStorage.setItem('token', JSON.stringify(this.token))
-        localStorage.setItem('refreshToken', JSON.stringify(this.refreshToken))
+        localStorage.setItem('token', this.token!)
+        localStorage.setItem('refreshToken', this.refreshToken!)
       } else if (this.token) {
-        sessionStorage.setItem('token', JSON.stringify(this.token))
-        sessionStorage.setItem('refreshToken', JSON.stringify(this.refreshToken))
-      } else {
-        localStorage.removeItem('token')
-        localStorage.removeItem('refreshToken')
-        sessionStorage.removeItem('token')
-        sessionStorage.removeItem('refreshToken')
+        sessionStorage.setItem('token', this.token!)
+        sessionStorage.setItem('refreshToken', this.refreshToken!)
       }
     },
 
@@ -101,6 +94,13 @@ export const useAuth = defineStore('auth', {
         this.token = sessionStorage.getItem('token')
         this.refreshToken = sessionStorage.getItem('refreshToken')
       }
+    },
+
+    clearStorage() {
+      localStorage.removeItem('token')
+      localStorage.removeItem('refreshToken')
+      sessionStorage.removeItem('token')
+      sessionStorage.removeItem('refreshToken')
     },
 	},
 })

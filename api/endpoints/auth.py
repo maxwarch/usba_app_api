@@ -89,9 +89,13 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
 
 def create_or_update_refresh_token(email: AnyStr, refresh_token_sent: RefreshToken = None) -> AnyStr:
     if refresh_token_sent:
-        db_token_sess = db.session.query(RefreshTokenModel).filter(RefreshTokenModel.email == email, RefreshTokenModel.refresh_token == refresh_token_sent.refresh_token)
-
+        db_token_sess = db.session.query(RefreshTokenModel).filter(
+            RefreshTokenModel.email == email, 
+            RefreshTokenModel.refresh_token == refresh_token_sent.refresh_token, 
+            RefreshTokenModel.date_valid >= datetime.now(timezone.utc)
+        )
         db_token = db_token_sess.one_or_none()
+
         if not db_token:
             raise HTTPException(status_code=403, detail="Invalid refresh token.")
 
@@ -194,8 +198,8 @@ security = HTTPBearer()
 async def refresh_token(credentials: Annotated[HTTPAuthorizationCredentials, Depends(security)], token: RefreshToken) -> Token:
     try:
         bearer = JWTBearer()
-        email = bearer.get_email(credentials.credentials)
-
+        email = bearer.get_email(credentials.credentials, verify_exp=False)
+        print(credentials.credentials)
         return create_all_token(email, token)
     except JWTError:
         raise HTTPException(status_code=403, detail="Invalid token.")
