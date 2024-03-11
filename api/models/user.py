@@ -20,6 +20,8 @@ class UserRegister(UserLogin):
 
 class User(UserRegister):
     is_active: bool | None = None
+    verified: bool | None = None
+    verify_token: str | None
 
     class Config:
         from_attributes = True

@@ -45,7 +45,6 @@ export const useAuth = defineStore('auth', {
     isLogin: (state) => state.token !== null,
 	},
 	actions: {
-    // 321654sdfg
     async login(userData: UserLogin): Promise<APIResponse<null>> {
       const { status, data } = await api.post('/auth/login', userData, {
         headers,

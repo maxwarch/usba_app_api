@@ -14,6 +14,8 @@ class UserModel(Base):
     firstname = Column(String, nullable=True)
     lastname = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
+    verified = Column(Boolean, default=False)
+    verify_token = Column(String, default=False)
     time_created = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     time_updated = Column(DateTime(timezone=True), onupdate=func.now(), nullable=False)
     

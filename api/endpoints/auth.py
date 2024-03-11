@@ -1,5 +1,6 @@
 import secrets
 from typing import Annotated, AnyStr
+from utils.email_util import send_email
 
 import bcrypt
 from datetime import datetime, timedelta, timezone
@@ -8,7 +9,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer, OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi_sqlalchemy import db
 from jose import JWTError, jwt
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from sqlalchemy import func
 
 from utils.environment import get_env
@@ -19,7 +20,8 @@ from models.migrations import RefreshTokenModel, UserModel
 
 SECRET_KEY = get_env('JWT_SECRET_KEY')
 ALGORITHM = get_env('JWT_ALGORITHM')
-ACCESS_TOKEN_EXPIRE_MINUTES = int(get_env('JWT_ACCESS_TOKEN_EXPIRE_MINUTES'))
+JWT_ACCESS_TOKEN_EXPIRE_MINUTES = int(get_env('JWT_ACCESS_TOKEN_EXPIRE_MINUTES'))
+MAIL_VERIFY_EXPIRE_MINUTES = int(get_env('MAIL_VERIFY_EXPIRE_MINUTES'))
 
 ''' TOKEN SCHEMA'''
 class Token(BaseModel):
@@ -35,6 +37,9 @@ class TokenData(BaseModel):
 
 class UserInDB(User):
     password: str
+
+class Email(BaseModel):
+    email: EmailStr
 
 ''' END TOKEN SCHEMA'''
 
@@ -68,7 +73,7 @@ def authenticate_user(email: str, password: str):
     return user
 
 def create_all_token(email: AnyStr, refresh_token_sent: RefreshToken = None):
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes = JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": email}, expires_delta=access_token_expires
     )
@@ -149,6 +154,28 @@ async def get_current_active_user(
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
+async def send_verify_code(email: Email):
+    if not email:
+        return True
+
+    db_user_sess = db.session.query(User).filter(User.email == email)
+    db_user = db_user_sess.one_or_none()
+    if not db_user:
+        return True
+    else:
+        access_token_expires = timedelta(minutes=MAIL_VERIFY_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": db_user.email}, expires_delta=access_token_expires
+        )
+        db_user_sess.update({
+            User.verify_token: access_token, 
+            User.verified: False
+        }, synchronize_session=False)
+        
+        db.session.commit()
+
+        return await send_email(access_token)
+
 router = APIRouter()
 
 def raw_register(email: str, password: str) -> Token:
@@ -199,7 +226,10 @@ async def refresh_token(credentials: Annotated[HTTPAuthorizationCredentials, Dep
     try:
         bearer = JWTBearer()
         email = bearer.get_email(credentials.credentials, verify_exp=False)
-        print(credentials.credentials)
         return create_all_token(email, token)
     except JWTError:
         raise HTTPException(status_code=403, detail="Invalid token.")
+
+@router.post('/send_verify', status_code=status.HTTP_200_OK)
+async def do_send_verify(email: Email):
+    send_verify_code(email=email)

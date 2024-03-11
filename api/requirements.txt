@@ -12,3 +12,4 @@ alembic
 python-multipart
 python-jose[cryptography]
 bcrypt
+fastapi-mail

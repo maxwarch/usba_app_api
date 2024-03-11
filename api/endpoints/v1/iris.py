@@ -4,6 +4,7 @@ from sklearn.pipeline import Pipeline
 from joblib import load
 
 from fastapi import APIRouter, Depends
+from utils.email_util import send_email
 
 from utils.auth_bearer import JWTBearer
 
@@ -23,7 +24,12 @@ class ParamIris(BaseModel):
 router = APIRouter()
 
 @router.get('/test', dependencies=[Depends(JWTBearer())])
-async def test():
+def test():
+    return {"status": "ok"}
+
+@router.get('/send_email')
+async def send_api_email():
+    await send_email()
     return {"status": "ok"}
 
 @router.post('/predict', dependencies=[Depends(JWTBearer())])
