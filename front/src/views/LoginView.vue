@@ -55,7 +55,7 @@
 
 						<button class="w-full rounded-lg bg-matisse-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-matisse-700 focus:outline-none focus:ring-4 focus:ring-matisse-300" @click="submit">Login</button>
 
-						<p v-if="error" class="text-center text-red-700">{{ error }}</p>
+						<p v-if="error" class="mt-4 text-center text-red-700">{{ error }}</p>
 
 						<!-- <a href="#" class="mt-4 block text-center text-sm text-gray-500 hover:underline" @click="toggleForgotPassword = true">
 							Mot de passe oublié ?
@@ -87,7 +87,6 @@
 	import Dialog from 'primevue/dialog'
 	import InputText from 'primevue/inputtext'
 	import Password from 'primevue/password'
-	import { useToast } from 'primevue/usetoast'
 	import { reactive, ref } from 'vue'
 	import { useRouter } from 'vue-router'
 
@@ -95,7 +94,6 @@
 	import { useUI } from '@/store/ui'
 
 	const uiStore = useUI()
-	const toast = useToast()
 	const auth = useAuth()
 	const router = useRouter()
 	const toggleForgotPassword = ref<boolean>(false)

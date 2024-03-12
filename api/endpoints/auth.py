@@ -32,6 +32,9 @@ class Token(BaseModel):
 class RefreshToken(BaseModel):
     refresh_token: str
 
+class VerifyToken(BaseModel):
+    token: str
+
 class TokenData(BaseModel):
     username: str | None = None
 
@@ -252,21 +255,21 @@ async def do_send_verify(email: Email):
     await send_verify_code(email=email)
     return {"detail": 'ok'}
 
-@router.get('/verify', status_code=status.HTTP_200_OK)
-async def do_verify(token: str):
+@router.post('/verify', status_code=status.HTTP_200_OK)
+async def do_verify(token: VerifyToken):
     if not token:
-        raise HTTPException(status_code=401, detail="No token.")
+        raise HTTPException(status_code=403, detail="No token.")
     
     jwt_bearer = JWTBearer()
-    email = jwt_bearer.get_email(token)
+    email = jwt_bearer.get_email(token.token)
     if not email:
-        raise HTTPException(status_code=401, detail="Invalid token.")
+        raise HTTPException(status_code=403, detail="Invalid token.")
 
-    user_sess = db.session.query(UserModel).filter(UserModel.email == email, UserModel.verify_token == token)
+    user_sess = db.session.query(UserModel).filter(UserModel.email == email, UserModel.verify_token == token.token)
     user_dict = user_sess.one_or_none()
 
     if not user_dict:
-        raise HTTPException(status_code=401, detail="Can't verify")
+        raise HTTPException(status_code=403, detail="Can't verify token")
     
     user_sess.update({
         UserModel.verified: True

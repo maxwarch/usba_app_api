@@ -91,6 +91,7 @@
 	import Dialog from 'primevue/dialog'
 	import InputText from 'primevue/inputtext'
 	import Password from 'primevue/password'
+	import { useToast } from 'primevue/usetoast'
 	import { computed, reactive, ref } from 'vue'
 
 	import ErrorText from '@/components/ErrorText.vue'
@@ -99,9 +100,10 @@
 
 	const uiStore = useUI()
 	const auth = useAuth()
+	const toast = useToast()
 
 	const user: User = reactive({
-		email    : 'a@a.fr',
+		email    : 'testsimplon@yopmail.com',
 		password : 'azerty1234',
 		firstname: '',
 		lastname : '',
@@ -135,7 +137,10 @@
 			const dataSend = omitBy(user, isEmpty) as User
 			const { success } = await auth.register(dataSend)
 			auth.setRememberMe(rememberMe.value)
-			if (success) uiStore.registerVisible = false
+			if (success) {
+				toast.add({ severity: 'info', life: 3000, detail: 'Un email de confirmation vous a été envoyé.' })
+				uiStore.registerVisible = false
+			}
 		}
 	}
 </script>

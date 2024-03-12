@@ -57,7 +57,6 @@ export const useAuth = defineStore('auth', {
         return { success, data }
       } catch (e) {
         if (isAxiosError(e)) {
-          console.log(e)
           const { status, data } = e.response as AxiosResponse
           if (status == 403 && data.detail == 'You must confirm registration') {
             this.sendVerify(userData.username!)
@@ -81,8 +80,6 @@ export const useAuth = defineStore('auth', {
       })
 
       const success = status == 201
-      if (success) storeToken(data)
-
       return { success, data }
     },
 
@@ -91,7 +88,11 @@ export const useAuth = defineStore('auth', {
     },
 
     async verify(token: string) {
-      await api.post('/auth/verify', { token })
+      const { status, data } = await api.post('/auth/verify', { token })
+      const success = status == 200
+      if (success) storeToken(data)
+
+      return { success, data }
     },
 
     setRememberMe(val: boolean) {

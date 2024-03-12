@@ -9,6 +9,7 @@ export const useUI = defineStore('ui', {
 		loading        : false,
 		loginVisible   : false,
 		registerVisible: false,
+		verifyVisible  : false,
 		toRoute        : <RouteLocationNormalized | undefined> undefined,
 	}),
 	getters: {

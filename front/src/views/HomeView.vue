@@ -9,18 +9,30 @@
 </template>
 
 <script lang="ts" setup>
+	import { AxiosResponse, isAxiosError } from 'axios'
+	import { useToast } from 'primevue/usetoast'
 	import { onMounted } from 'vue'
 	import { useRoute } from 'vue-router'
 
 	import { useAuth } from '@/store/auth'
 
+	const toast = useToast()
 	const route = useRoute()
 	const auth = useAuth()
 
 	onMounted(async() => {
 		if (route.redirectedFrom?.params.token){
-			await auth.verify(route.redirectedFrom?.params.token as string)
-
+			try {
+				await auth.verify(route.redirectedFrom?.params.token as string)
+				toast.add({ severity: 'info', life: 3000, detail: 'Merci d\'avoir confirmé. Vous êtes connecté !' })
+			} catch (e) {
+				if (isAxiosError(e)) {
+					const { data } = e.response as AxiosResponse
+					if (data.includes('token')) {
+						toast.add({ severity: 'error', life: 3000, detail: 'Le lien a expiré ou invalide.' })
+					}
+				}
+			}
 		}
 	})
 

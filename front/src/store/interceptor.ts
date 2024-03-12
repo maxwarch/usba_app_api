@@ -6,18 +6,18 @@ import { storeToken, useAuth } from '@/store/auth'
 import { useUI } from '@/store/ui'
 
 export const api = axios.create({
-  baseURL: `${API_URL}`,
+	baseURL: `${API_URL}`,
 })
 
 api.interceptors.request.use(
-  (config) => {
+	(config) => {
 		const store = useAuth()
-    if (store.token) {
+		if (store.token) {
 			config.headers.Authorization = `Bearer ${store.token}`
-    }
-    return config
-  },
-  (error) => error,
+		}
+		return config
+	},
+	(error) => error,
 )
 
 interface RetryAxiosRequestConfig extends AxiosRequestConfig {
@@ -28,14 +28,14 @@ api.interceptors.response.use(
 	(response) => response,
 	async (error: AxiosError) => {
 		const { config, response } = error
-		const store = useAuth()
+		const auth = useAuth()
 		const originalRequest: RetryAxiosRequestConfig = config!
 
 		if (response && originalRequest && response.status === 401 && !originalRequest._retry) {
 			originalRequest._retry = true
 
 			try {
-				const { status, data } = await api.post(`${API_URL}/auth/refresh`, { refresh_token: store.refreshToken })
+				const { status, data } = await api.post(`${API_URL}/auth/refresh`, { refresh_token: auth.refreshToken })
 				if (status == 200) storeToken(data)
 
 				if (originalRequest.headers)
@@ -44,6 +44,7 @@ api.interceptors.response.use(
 				return axios(originalRequest)
 			} catch (error) {
 				const uiStore = useUI()
+				auth.logout()
 				uiStore.loginVisible = true
 			}
 		}
