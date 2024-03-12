@@ -40,7 +40,6 @@ class JWTBearer(HTTPBearer):
             payload = jwt.decode(jwtoken, SECRET_KEY, algorithms=[ALGORITHM], options={'verify_exp': verify_exp})
             email: str = payload.get("sub")
         except JWTError:
-            print(JWTError)
             email = None
 
         return email

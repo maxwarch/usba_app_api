@@ -61,6 +61,12 @@ def verify_password(plain_password, hashed_password):
 def get_user(email: str):
     user = db.session.query(UserModel).filter(UserModel.email == email)
     user_dict = user.one_or_none()
+    if user_dict and user_dict.verified is False:
+        raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="You must confirm registration"
+        )
+    
     if user_dict:
         return UserInDB(**jsonable_encoder(user_dict))
 
@@ -158,7 +164,7 @@ async def send_verify_code(email: Email):
     if not email:
         return True
 
-    db_user_sess = db.session.query(User).filter(User.email == email)
+    db_user_sess = db.session.query(UserModel).filter(UserModel.email == email.email)
     db_user = db_user_sess.one_or_none()
     if not db_user:
         return True
@@ -167,18 +173,23 @@ async def send_verify_code(email: Email):
         access_token = create_access_token(
             data={"sub": db_user.email}, expires_delta=access_token_expires
         )
+
         db_user_sess.update({
-            User.verify_token: access_token, 
-            User.verified: False
+            UserModel.verify_token: access_token,
+            UserModel.verified: False
         }, synchronize_session=False)
         
         db.session.commit()
 
-        return await send_email(access_token)
+        message = f"<a href='{get_env('BASE_URL_FRONT')}/verify/{access_token}'>Vérifier mon email</a>"
+        await send_email(db_user, 
+                                message=message, 
+                                subject='Vérification de votre inscription')
+        
+        return True
 
-router = APIRouter()
 
-def raw_register(email: str, password: str) -> Token:
+def auth_user_and_get_token(email: str, password: str) -> Token:
     user = authenticate_user(email, password)
     if not user:
         raise HTTPException(
@@ -190,15 +201,18 @@ def raw_register(email: str, password: str) -> Token:
     return create_all_token(user.email)
 
 
+
+router = APIRouter()
+
 ''' ROUTES '''
 @router.post("/login")
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()]
 ) -> Token:
-    return raw_register(form_data.username, form_data.password)
+    return auth_user_and_get_token(form_data.username, form_data.password)
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register(form_data: Annotated[UserRegister, Depends()]) -> Token:
+async def register(form_data: Annotated[UserRegister, Depends()]) -> bool:
     if get_user(form_data.email):
         raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -217,7 +231,10 @@ async def register(form_data: Annotated[UserRegister, Depends()]) -> Token:
     db.session.add(db_user)
     db.session.commit()
 
-    return raw_register(form_data.email, form_data.password)
+    #auth_user_and_get_token(form_data.email, form_data.password)
+    await send_verify_code(Email(email=form_data.email))
+
+    return True
 
 security = HTTPBearer()
 
@@ -232,4 +249,28 @@ async def refresh_token(credentials: Annotated[HTTPAuthorizationCredentials, Dep
 
 @router.post('/send_verify', status_code=status.HTTP_200_OK)
 async def do_send_verify(email: Email):
-    send_verify_code(email=email)
+    await send_verify_code(email=email)
+    return {"detail": 'ok'}
+
+@router.get('/verify', status_code=status.HTTP_200_OK)
+async def do_verify(token: str):
+    if not token:
+        raise HTTPException(status_code=401, detail="No token.")
+    
+    jwt_bearer = JWTBearer()
+    email = jwt_bearer.get_email(token)
+    if not email:
+        raise HTTPException(status_code=401, detail="Invalid token.")
+
+    user_sess = db.session.query(UserModel).filter(UserModel.email == email, UserModel.verify_token == token)
+    user_dict = user_sess.one_or_none()
+
+    if not user_dict:
+        raise HTTPException(status_code=401, detail="Can't verify")
+    
+    user_sess.update({
+        UserModel.verified: True
+    })
+    db.session.commit()
+
+    return create_all_token(user_dict.email)

@@ -28,6 +28,11 @@ const routes: RouteRecordRaw[] = [
 			requiresAuth: true,
 		},
 	},
+	{
+		path    : '/verify/:token',
+		name    : 'verify',
+		redirect: '/',
+	},
 ]
 
 const router = createRouter({

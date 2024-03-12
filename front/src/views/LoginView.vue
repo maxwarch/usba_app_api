@@ -55,9 +55,11 @@
 
 						<button class="w-full rounded-lg bg-matisse-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-matisse-700 focus:outline-none focus:ring-4 focus:ring-matisse-300" @click="submit">Login</button>
 
-						<a href="#" class="mt-4 block text-center text-sm text-gray-500 hover:underline" @click="toggleForgotPassword = true">
+						<p v-if="error" class="text-center text-red-700">{{ error }}</p>
+
+						<!-- <a href="#" class="mt-4 block text-center text-sm text-gray-500 hover:underline" @click="toggleForgotPassword = true">
 							Mot de passe oublié ?
-						</a>
+						</a> -->
 					</div>
 				</div>
 			</div>
@@ -67,7 +69,7 @@
 						<label for="email" class="mb-1 block text-sm font-medium text-gray-700">Email</label>
 						<InputText v-model="userForgotEmail" class="input-text" autofocus></InputText>
 					</div>
-					<button class="w-full rounded-lg bg-matisse-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-matisse-700 focus:outline-none focus:ring-4 focus:ring-matisse-300" @click="submitForgotPassword">Envoyer</button>
+					<button class="w-full rounded-lg bg-matisse-500 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-matisse-700 focus:outline-none focus:ring-4 focus:ring-matisse-300 disabled:bg-matisse-200" :disabled="submitDisabled" @click="submitForgotPassword">Envoyer</button>
 
 					<a href="#" class="relative mt-4 block text-sm text-gray-500 no-underline" @click="toggleForgotPassword = false">
 						<div class="mx-auto flex items-center">
@@ -85,6 +87,7 @@
 	import Dialog from 'primevue/dialog'
 	import InputText from 'primevue/inputtext'
 	import Password from 'primevue/password'
+	import { useToast } from 'primevue/usetoast'
 	import { reactive, ref } from 'vue'
 	import { useRouter } from 'vue-router'
 
@@ -92,22 +95,31 @@
 	import { useUI } from '@/store/ui'
 
 	const uiStore = useUI()
+	const toast = useToast()
 	const auth = useAuth()
 	const router = useRouter()
 	const toggleForgotPassword = ref<boolean>(false)
 	const rememberMe = ref<boolean>(true)
 
 	const user: UserLogin = reactive({
-		username: 'a@a.fr',
+		username: 'testsimplon@yopmail.com',
 		password: 'azerty1234',
 	})
 
 	const userForgotEmail = ref<string>()
+	const error = ref<string>('')
+	const submitDisabled = ref<boolean>(false)
 
 	async function submit() {
 		const { success } = await auth.login(user)
 		auth.setRememberMe(rememberMe.value)
 		if (success) uiStore.loginVisible = false
+		if (success == 'verify') {
+			error.value = 'Un email de vérification vous a été envoyé'
+
+		}
+		if (success == false)  error.value = 'Impossible de vous identifier'
+
 		if (uiStore.toRoute)
 			router.push(uiStore.toRoute.fullPath)
 	}

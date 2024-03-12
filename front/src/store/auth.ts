@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { AxiosResponse, isAxiosError } from 'axios'
 import { defineStore } from 'pinia'
 
 import { api } from '@/store/interceptor'
@@ -46,14 +47,26 @@ export const useAuth = defineStore('auth', {
 	},
 	actions: {
     async login(userData: UserLogin): Promise<APIResponse<null>> {
-      const { status, data } = await api.post('/auth/login', userData, {
-        headers,
-      })
+      try {
+        const { status, data } = await api.post('/auth/login', userData, {
+          headers,
+        })
 
-      const success = status == 200
-      if (success) storeToken(data)
+        const success = status == 200
+        if (success) storeToken(data)
+        return { success, data }
+      } catch (e) {
+        if (isAxiosError(e)) {
+          console.log(e)
+          const { status, data } = e.response as AxiosResponse
+          if (status == 403 && data.detail == 'You must confirm registration') {
+            this.sendVerify(userData.username!)
+            return { success: 'verify', data: null }
+          }
+        }
+      }
 
-      return { success, data }
+      return { success: false, data: null }
     },
 
     logout() {
@@ -71,6 +84,14 @@ export const useAuth = defineStore('auth', {
       if (success) storeToken(data)
 
       return { success, data }
+    },
+
+    async sendVerify(email: string) {
+      await api.post('/auth/send_verify', { email })
+    },
+
+    async verify(token: string) {
+      await api.post('/auth/verify', { token })
     },
 
     setRememberMe(val: boolean) {

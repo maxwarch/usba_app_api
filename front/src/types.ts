@@ -1,5 +1,5 @@
 export type APIResponse<T> = {
-	success: boolean
+	success: boolean | string
 	data: T
 	status?: number
 }

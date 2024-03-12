@@ -7,3 +7,21 @@
 		</div>
 	</div>
 </template>
+
+<script lang="ts" setup>
+	import { onMounted } from 'vue'
+	import { useRoute } from 'vue-router'
+
+	import { useAuth } from '@/store/auth'
+
+	const route = useRoute()
+	const auth = useAuth()
+
+	onMounted(async() => {
+		if (route.redirectedFrom?.params.token){
+			await auth.verify(route.redirectedFrom?.params.token as string)
+
+		}
+	})
+
+</script>

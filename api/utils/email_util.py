@@ -23,7 +23,7 @@ async def send_email(user: User, message: str, subject: str) -> bool:
         VALIDATE_CERTS = True
     )
 
-    html = f"""<p>{message}</p> """
+    html = f"""{message}"""
 
     message = MessageSchema(
         subject=subject,
@@ -32,5 +32,4 @@ async def send_email(user: User, message: str, subject: str) -> bool:
         subtype=MessageType.html)
 
     fm = FastMail(conf)
-    await fm.send_message(message)
-    return True
+    return await fm.send_message(message)
