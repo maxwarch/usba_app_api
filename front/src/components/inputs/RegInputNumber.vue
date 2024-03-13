@@ -1,55 +1,96 @@
 <template>
-	<div class="relative grid grid-rows-2">
-		<label
-			v-if="label"
-			:for="uniq"
-			:class="classLabel">{{label}}</label>
-		<span class="inline-flex w-full">
-			<input
-				:id="uniq"
+	<div>
+		<div class="flex flex-col gap-2">
+			<label
+				v-if="label"
+				:for="uniq"
+				:class="classLabel">{{label}}</label>
+			<InputNumber
 				v-model="modelValue"
-				type="number"
-				:role="attrs.role as string || ''"
-				:placeholder="attrs.placeholder as string || ''"
-				:class="[(props.hasError) ? errorInputClass : '', classInputText]" />
-
-			<slot name="icons"></slot>
-		</span>
+				:inputId="uniq"
+				:suffix="suffix"
+				showButtons
+				buttonLayout="vertical"
+				:min="min"
+				:max="max"
+				:step="step"
+				:pt="{
+					input:{
+						root: {
+							class: 'input-number'
+						}
+					},
+					decrementButton: {
+						root: {
+							class: 'bt-minus'
+						}
+					},
+					incrementButton: {
+						root: {
+							class: 'bt-plus'
+						}
+					}
+				}">
+				<template #incrementbuttonicon>
+					<span class="pi pi-plus" />
+				</template>
+				<template #decrementbuttonicon>
+					<span class="pi pi-minus" />
+				</template>
+			</InputNumber>
+		</div>
 
 		<RegErrorText v-if="hasError" :errorInfo="errorInfo"></RegErrorText>
 	</div>
 </template>
 <script setup lang="ts">
 	import uniqueId from 'lodash/uniqueId'
-	import { computed, useAttrs } from 'vue'
+	import InputNumber from 'primevue/inputnumber'
+	import { computed } from 'vue'
 
 	import IErrorProps from '@/components/inputs/IErrorProps'
 
 	interface Props extends IErrorProps {
 		label?     : string | boolean,
-		inputClass?: string,
 		labelClass?: string,
-		icon?      : string
+		min?:number
+		max?:number
+		step?:number
+		suffix?:string
 	}
 
-	// defineOptions({
-	// 	inheritAttrs: false,
-	// })
-
-	const modelValue = defineModel<string | number>()
+	const modelValue = defineModel<number | null>()
 
 	const props = withDefaults(defineProps<Props>(), {
 		label          : false,
 		errorInputClass: 'reg-input--error-input',
+		min            : 0,
+		max            : 100,
+		step           : 1,
+		suffix         : '',
 	})
 
-	const attrs = useAttrs()
 	const uniq = uniqueId('reginputtextid-')
 
-	const classInputText = computed(() => {
-		return (props.inputClass) ? `${props.inputClass} reg-input--text` : 'reg-input--text'
-	})
 	const classLabel = computed(() => {
 		return (props.labelClass) ? `${props.labelClass} reg-input--label` : 'reg-input--label'
 	})
 </script>
+
+<style lang="scss" scoped>
+:deep(.input-number){
+	@apply border rounded-l-md border-gray-300 p-2 focus:outline-0 focus:outline-none focus:ring-0 w-full
+}
+
+:deep(.bt-plus){
+	@apply w-10 bg-matisse-700 border-r-2 border-matisse-600 text-white hover:bg-matisse-800
+}
+
+:deep(.bt-minus){
+	@apply w-10 bg-matisse-700 rounded-r-md text-white hover:bg-matisse-800
+}
+
+.reg-input--error-text{
+	@apply bg-red-200/30 border-2 border-red-300
+}
+</style>

@@ -23,7 +23,13 @@
 	const errorComputed = computed(() => {
 		return Object.assign({
 			errorText     : 'Erreur',
-			errorTextClass: 'reg-input--error-text',
+			errorTextClass: 'reg-error-text',
 		}, props.errorInfo)
 	})
 </script>
+
+<style lang="scss" scoped>
+.reg-error-text{
+	@apply text-red-600
+}
+</style>

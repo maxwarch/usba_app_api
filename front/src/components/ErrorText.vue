@@ -23,7 +23,7 @@
 	const errorComputed = computed(() => {
 		return Object.assign({
 			errorText     : 'Erreur',
-			errorTextClass: 'text-red-500 text-xs italic absolute',
+			errorTextClass: 'text-red-500 text-xs italic absolute p-0',
 		}, props.errorInfo)
 	})
 </script>

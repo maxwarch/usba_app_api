@@ -6,7 +6,10 @@
 					<img src="/logo.svg" class="h-16" alt="">
 				</router-link>
 				<div class="container-bts flex items-center gap-14">
-					<router-link :to="{name: 'elligibilite'}" title="Elligibilité" class="hover-underline-animation">
+					<router-link :to="{name: 'iris'}" title="Prédiction des iris" class="hover-underline-animation">
+						Iris
+					</router-link>
+					<router-link :to="{name: 'usba'}" title="Prédiction de prêt" class="hover-underline-animation">
 						Elligibilité
 					</router-link>
 					<router-link :to="{name: 'about'}" title="A propos" class="hover-underline-animation">

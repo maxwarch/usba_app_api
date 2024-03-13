@@ -2,9 +2,11 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import { useAuth } from '@/store/auth'
 import { useUI } from '@/store/ui'
-import AboutView from '@/views/AboutView.vue'
 import HomeView from '@/views/HomeView.vue'
-import PredictView from '@/views/PredictView.vue'
+
+const AboutView  = () => import('@/views/AboutView.vue')
+const PredictIrisView  = () => import('@/views/PredictIrisView.vue')
+const PredictUsbaView  = () => import('@/views/PredictUsbaView.vue')
 
 const routes: RouteRecordRaw[] = [
 	{
@@ -20,9 +22,18 @@ const routes: RouteRecordRaw[] = [
 		meta     : { background: '/bg-about.jpg' },
 	},
 	{
-		path     : '/elligibilite',
-		name     : 'elligibilite',
-		component: PredictView,
+		path     : '/usba',
+		name     : 'usba',
+		component: PredictUsbaView,
+		meta     : {
+			background  : '/bg-predict.jpg',
+			requiresAuth: true,
+		},
+	},
+	{
+		path     : '/iris',
+		name     : 'iris',
+		component: PredictIrisView,
 		meta     : {
 			background  : '/bg-predict.jpg',
 			requiresAuth: true,

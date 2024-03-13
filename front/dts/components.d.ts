@@ -12,6 +12,8 @@ declare module 'vue' {
     HomeView: typeof import('./../src/views/HomeView.vue')['default']
     LoginView: typeof import('./../src/views/LoginView.vue')['default']
     Navbar: typeof import('./../src/components/Navbar.vue')['default']
+    PredictIrisView: typeof import('./../src/views/PredictIrisView.vue')['default']
+    PredictUsbaView: typeof import('./../src/views/PredictUsbaView.vue')['default']
     PredictView: typeof import('./../src/views/PredictView.vue')['default']
     RegErrorText: typeof import('./../src/components/inputs/RegErrorText.vue')['default']
     RegInputNumber: typeof import('./../src/components/inputs/RegInputNumber.vue')['default']
