@@ -4,8 +4,6 @@ from sklearn.pipeline import Pipeline
 from joblib import load
 
 from fastapi import APIRouter, Depends
-from utils.email_util import send_email
-
 from utils.auth_bearer import JWTBearer
 
 class Result(BaseModel):
@@ -23,18 +21,26 @@ class ParamIris(BaseModel):
 
 router = APIRouter()
 
-@router.get('/test', dependencies=[Depends(JWTBearer())])
-def test():
-    return {"status": "ok"}
+@router.post('/iris', dependencies=[Depends(JWTBearer())])
+async def predict_iris(p: ParamIris):
+    model: Pipeline = load('./model_iris.pkl')
+    
+    X = []
+    for iris in p.iris:
+        X.append([iris.sepalLength, iris.sepalWidth, iris.petalLength, iris.petalWidth])
+    
+    # sepal length (cm), sepal width (cm), petal length (cm), petal width (cm)
+    res = model.predict(X)
+    result: Result = res.tolist()
 
-@router.get('/send_email')
-async def send_api_email():
-    await send_email()
-    return {"status": "ok"}
+    return {'result': result}
 
-@router.post('/predict', dependencies=[Depends(JWTBearer())])
-async def predict(p: ParamIris):
-    model: Pipeline = load('./model.pkl')
+
+
+
+@router.post('/usba', dependencies=[Depends(JWTBearer())])
+async def predict_iris(p: ParamIris):
+    model: Pipeline = load('./model_usba.pkl')
     
     X = []
     for iris in p.iris:

@@ -162,3 +162,4 @@ cython_debug/
 postgres-data
 .DS_Store
 deploy-aci.yaml
+api/secrets/service-account.json

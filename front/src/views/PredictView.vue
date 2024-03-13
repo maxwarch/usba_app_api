@@ -3,41 +3,18 @@
 		<h1 class="text-2xl font-bold text-white">Etes-vous élligible ?</h1>
 		<div class="flex flex-col gap-4">
 			<div class="grid grid-cols-2 gap-8">
-				<div class="grid grid-rows-2 gap-0">
-					<label for="sepalLength" class="text-white">Longueur Sepal</label>
-					<InputNumber
-						id="sepalLength"
-						v-model="irisData.sepalLength"
-						inputId="sepalLength"
-						suffix=" cm"
-						showButtons
-						buttonLayout="vertical"
-						:step="0.1"
-						:pt="{
-							input:{
-								root: {
-									class: 'input-number'
-								}
-							},
-							decrementButton: {
-								root: {
-									class: 'bt-minus'
-								}
-							},
-							incrementButton: {
-								root: {
-									class: 'bt-plus'
-								}
-							}
-						}">
-						<template #incrementbuttonicon>
-							<span class="pi pi-plus" />
-						</template>
-						<template #decrementbuttonicon>
-							<span class="pi pi-minus" />
-						</template>
-					</InputNumber>
-				</div>
+				<RegInputNumber
+					v-model.trim="irisData.sepalLength"
+					input-class="rounded-l-lg"
+					label-class="text-white"
+					label="Longueur Sepal"
+				>
+					<template #icons>
+						<button type="button" class="border-r-2 border-white bg-matisse-500 text-white hover:bg-matisse-700"><span class="pi pi-plus p-2" /></button>
+						<button type="button" class="rounded-r-lg bg-matisse-500 text-sm text-white hover:bg-matisse-700"><span class="pi pi-minus p-2" /></button>
+					</template>
+				</RegInputNumber>
+
 				<div class="grid grid-rows-2">
 					<label for="sepalWidth" class=" text-white">Largeur Sepal</label>
 					<InputNumber

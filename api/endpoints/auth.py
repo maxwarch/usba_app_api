@@ -185,11 +185,11 @@ async def send_verify_code(email: Email):
         db.session.commit()
 
         message = f"<a href='{get_env('BASE_URL_FRONT')}/verify/{access_token}'>Vérifier mon email</a>"
-        await send_email(db_user, 
-                                message=message, 
-                                subject='Vérification de votre inscription')
+        # await send_email(db_user, 
+        #                         message=message, 
+        #                         subject='Vérification de votre inscription')
         
-        return True
+        return f"{get_env('BASE_URL_FRONT')}/verify/{access_token}"
 
 
 def auth_user_and_get_token(email: str, password: str) -> Token:
@@ -215,7 +215,7 @@ async def login_for_access_token(
     return auth_user_and_get_token(form_data.username, form_data.password)
 
 @router.post("/register", status_code=status.HTTP_201_CREATED)
-async def register(form_data: Annotated[UserRegister, Depends()]) -> bool:
+async def register(form_data: Annotated[UserRegister, Depends()]):
     if get_user(form_data.email):
         raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
@@ -235,9 +235,10 @@ async def register(form_data: Annotated[UserRegister, Depends()]) -> bool:
     db.session.commit()
 
     #auth_user_and_get_token(form_data.email, form_data.password)
-    await send_verify_code(Email(email=form_data.email))
+    url_verify = await send_verify_code(Email(email=form_data.email))
 
-    return True
+    return {'url': url_verify}
+    #return True
 
 security = HTTPBearer()
 
