@@ -4,7 +4,7 @@
 
 		<div class="grid gap-x-6 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
 			<dt>
-				<label>Approval Date</label>
+				<label>Date d'approbation</label>
 				<Calendar
 					v-model="usbaData.ApprovalDate"
 					showIcon
@@ -21,39 +21,7 @@
 						}
 					}"
 				/>
-			</dt>
-			<RegInputNumber
-				v-model.trim="usbaData.Term"
-				input-class="rounded-l-lg"
-				label-class="text-white text-lg"
-				label="Nb mois"
-				suffix=" mois"
-			/>
-
-			<RegInputNumber
-				v-model.trim="usbaData.NoEmp"
-				input-class="rounded-l-lg"
-				label-class="text-white text-lg"
-				label="Number of employees"
-				suffix=""
-			/>
-
-			<dt>
-				<label>Franchisé ?</label>
-				<select v-model="usbaData.FranchiseCode">
-					<template v-for="item in itemsFranchiseCode" :key="item">
-						<option :value="item">{{ item }}</option>
-					</template>
-				</select>
-			</dt>
-
-			<dt>
-				<label>Secteur</label>
-				<select v-model="usbaData.Naics">
-					<template v-for="item in itemsNaics" :key="item">
-						<option :value="item">{{ item }}</option>
-					</template>
-				</select>
+				<RegErrorText v-if="v$.ApprovalDate.$dirty && v$.ApprovalDate.required.$invalid" :error-info="{ errorText: 'Date d\'approbation est obligatoire'}" />
 			</dt>
 
 			<dt>
@@ -76,31 +44,36 @@
 						}
 					}"
 				/>
+				<RegErrorText v-if="v$.ApprovalFY.$dirty && v$.ApprovalFY.required.$invalid" :error-info="{ errorText: 'L\'année du prêt est obligatoire'}" />
 			</dt>
 
-			<dt>
-				<SelectButton
-					v-model="usbaData.NewExist"
-					:options="itemsNewExist" />
-			</dt>
+			<RegInputNumber
+				v-model.trim="usbaData.Term"
+				input-class="rounded-l-lg"
+				label-class="text-white text-lg"
+				label="Nb mois"
+				suffix=" mois"
+				:hasError="v$.Term.$dirty && v$.Term.required.$invalid"
+				:errorInfo="{errorText: 'Terme est obligatoire'}"
+			/>
+
+			<RegInputNumber
+				v-model.trim="usbaData.NoEmp"
+				input-class="rounded-l-lg"
+				label-class="text-white text-lg"
+				label="Number of employees"
+				:hasError="v$.NoEmp.$dirty && v$.NoEmp.required.$invalid"
+				:errorInfo="{errorText: 'Le nombre d\'employés est obligatoire'}"
+			/>
 
 			<dt>
-				<SelectButton
-					v-model="usbaData.LowDoc"
-					:options="itemsLowDoc" />
-			</dt>
-
-			<dt>
-				<SelectButton
-					v-model="usbaData.UrbanRural"
-					:options="itemsUrbanRural" />
-			</dt>
-
-			<dt>
-				<label>Crédit revolving ?</label>
-				<SelectButton
-					v-model="usbaData.RevLineCr"
-					:options="itemsRevLineCr" />
+				<label>Secteur</label>
+				<select v-model="usbaData.Naics">
+					<template v-for="item in itemsNaics" :key="item">
+						<option :value="item">{{ item }}</option>
+					</template>
+				</select>
+				<RegErrorText v-if="v$.Naics.$dirty && v$.Naics.required.$invalid" :error-info="{ errorText: 'Le secteur d\'activité est obligatoire'}" />
 			</dt>
 
 			<RegInputNumber
@@ -110,7 +83,10 @@
 				:step="2000"
 				:max="100000000"
 				label-class="text-white text-lg"
-				label="Montant Banque" />
+				label="Montant Banque"
+				:hasError="v$.GrAppv.$dirty && v$.GrAppv.required.$invalid"
+				:errorInfo="{errorText: 'Le montant de la banque est obligatoire'}"
+			/>
 
 			<RegInputNumber
 				v-model.trim="usbaData.CreateJob"
@@ -118,6 +94,8 @@
 				suffix=""
 				label-class="text-white text-lg"
 				label="Création d'emploi"
+				:hasError="v$.GrAppv.$dirty && v$.GrAppv.required.$invalid"
+				:errorInfo="{errorText: 'La création d\'emploi est obligatoire'}"
 			/>
 
 			<RegInputNumber
@@ -126,7 +104,56 @@
 				suffix=""
 				label-class="text-white text-lg"
 				label="Nb d'emplois final"
+				:hasError="v$.GrAppv.$dirty && v$.GrAppv.required.$invalid"
+				:errorInfo="{errorText: 'Le nombre d\'emplois est obligatoire'}"
 			/>
+		</div>
+
+		<div class="grid grid-cols-2">
+			<dt>
+				<label>Crédit revolving ?</label>
+				<SelectButton
+					v-model="usbaData.RevLineCr"
+					:options="itemsRevLineCr" />
+				<RegErrorText v-if="v$.RevLineCr.$dirty && v$.RevLineCr.required.$invalid" :error-info="{ errorText: 'Sélectionnez une option'}" />
+			</dt>
+
+			<dt>
+				<label>&nbsp;</label>
+				<SelectButton
+					v-model="usbaData.FranchiseCode"
+					:options="itemsFranchiseCode" />
+				<RegErrorText v-if="v$.FranchiseCode.$dirty && v$.FranchiseCode.required.$invalid" :error-info="{ errorText: 'Sélectionnez une option'}" />
+			</dt>
+
+			<dt>
+				<label>&nbsp;</label>
+				<SelectButton
+					v-model="usbaData.NewExist"
+					:options="itemsNewExist" />
+				<RegErrorText v-if="v$.NewExist.$dirty && v$.NewExist.required.$invalid" :error-info="{ errorText: 'Sélectionnez une option'}" />
+			</dt>
+
+			<dt>
+				<label>&nbsp;</label>
+				<SelectButton
+					v-model="usbaData.LowDoc"
+					:options="itemsLowDoc" />
+				<RegErrorText v-if="v$.LowDoc.$dirty && v$.LowDoc.required.$invalid" :error-info="{ errorText: 'Sélectionnez une option'}" />
+			</dt>
+
+			<dt>
+				<label>&nbsp;</label>
+				<SelectButton
+					v-model="usbaData.UrbanRural"
+					:options="itemsUrbanRural"
+					:pt="{
+						root: {
+							class:'w-full'
+						}
+					}" />
+				<RegErrorText v-if="v$.UrbanRural.$dirty && v$.UrbanRural.required.$invalid" :error-info="{ errorText: 'Sélectionnez une option'}" />
+			</dt>
 		</div>
 
 		<button class="mx-auto w-1/3 rounded bg-matisse-700 px-4 py-2 font-bold text-white hover:bg-matisse-800" @click="predict">Envoyer</button>
@@ -198,29 +225,29 @@
 		'No Loan Program',
 	]
 
-	type TUsbaData = {
-		ApprovalDate? : Date,
-		Term?         : number,
-		NoEmp?        : number,
-		FranchiseCode?: string,
-		Naics?        : string,
-		ApprovalFY?   : Date,
-		NewExist?     : string,
-		LowDoc?       : string,
-		GrAppv?       : number,
-		CreateJob?    : number,
-		RetainedJob?  : number,
-		UrbanRural?   : string,
-		RevLineCr?    : string,
-	}
+	// type TUsbaData = {
+	// 	ApprovalDate? : Date,
+	// 	Term?         : number,
+	// 	NoEmp?        : number,
+	// 	FranchiseCode?: string,
+	// 	Naics?        : string,
+	// 	ApprovalFY?   : Date,
+	// 	NewExist?     : string,
+	// 	LowDoc?       : string,
+	// 	GrAppv?       : number,
+	// 	CreateJob?    : number,
+	// 	RetainedJob?  : number,
+	// 	UrbanRural?   : string,
+	// 	RevLineCr?    : string,
+	// }
 
-	const usbaData = reactive<TUsbaData>({
+	const usbaData = reactive({
 		ApprovalDate : undefined,
 		Term         : undefined,
 		NoEmp        : undefined,
 		FranchiseCode: undefined,
 		Naics        : undefined,
-		ApprovalFY   : undefined,
+		ApprovalFY   : '',
 		NewExist     : undefined,
 		LowDoc       : undefined,
 		GrAppv       : undefined,
@@ -252,7 +279,8 @@
 		if (await v$.value.$validate()) {
 			try {
 				const sendData = { ...toValue(usbaData) }
-				sendData.ApprovalFY = new Date(sendData.ApprovalFY!.toDateString()).getFullYear().toString()
+				if (sendData.ApprovalFY)
+					sendData.ApprovalFY = String(new Date(sendData.ApprovalFY!).getFullYear().toString())
 
 				const { data } = await api.post(`/${API_VERSION}/predictions/usba`, { ...sendData })
 
